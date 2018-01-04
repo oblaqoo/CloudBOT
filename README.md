@@ -81,7 +81,8 @@ TODO
 
 Стандартная структура модуля
 -
-> module.exports = {
+```
+ module.exports = {
 	aliases: ["команда","command","cmd","кмд","цмд"], //Синонимы команды, ТОЛЬКО МАЛЕНЬКИЕ БУКВЫ!
 	msg:function(cbot,vk,msg,body,alias,obody){ //cbot = CloudBOT interface; vk = vk promise interface; msg = msg object; body = тело сообщения; alias = вызванный alias команды; cbody = тело сообщения без alias
 		//Этот блок не является обязательным, уберите его если он не используется вашим модулем
@@ -106,3 +107,4 @@ TODO
 		//Для получения этих данных и регистрации себя в качестве разработчика обратитесь сюда: https://vk.me/oblaqoo
 	},
 }
+```
