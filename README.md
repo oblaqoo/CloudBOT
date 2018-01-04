@@ -34,9 +34,9 @@ cd /home/ && git clone https://github.com/oblaqoo/CloudBOT && npm install
 -
 ```
 npm start
-    
+```
 или 
-    
+```
 node bot.js
 ```
 
