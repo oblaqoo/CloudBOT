@@ -25,6 +25,21 @@ TODO
 -
 - [ ] Псевдоинтеллект
 
+Установка
+-
+```
+cd /home/ && git clone https://github.com/oblaqoo/CloudBOT && npm install
+```
+Запуск
+-
+```
+npm start
+    
+или 
+    
+node bot.js
+```
+
 Документация
 -
 * `cbot` - объект бота
