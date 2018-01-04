@@ -28,7 +28,7 @@ TODO
 Установка
 -
 ```
-cd /home/ && git clone https://github.com/oblaqoo/CloudBOT && npm install
+cd /home/ && git clone https://github.com/oblaqoo/CloudBOT && cd CloudBOT && npm install
 ```
 Запуск
 -
