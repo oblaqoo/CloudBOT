@@ -23,4 +23,58 @@ CloudBOT NODE
 
 TODO
 -
-:black_square_button: Pseudo-intelligence
+:black_square_button: Псевдоинтеллект
+
+Документация
+-
+* `cbot` - объект бота
+	* `service`
+		* `counters` - счетчики
+			* `messages` - счетчики сообщений с начала сессии
+              * all - все `int`
+              * chat - в чатах `int`
+              * `prv` - личных
+            * start - время запуска, timestamp `int`
+		* `is_admin` (chat_id, user_id) - проверка, админ чата?
+		* `is_moder` (chat_id, user_id) - проверка, модератор чата?
+		* `lvl_check` (chat_id, user_id) - проверка, уровень админки; `0` - работяга, `1` - модер, `2` - админ
+	* `modules`
+		* `load` (module) - загрузка модуля
+	* `mysql`
+		* `db` - mysql connection, [docs](https://www.npmjs.com/package/mysql)
+	* `trust`
+		* `check` (module) - проверка модуля
+	* `utils`
+		* `rand` (min_random, max_random) - рандомное число
+		* `array_find` (array, value) - поиск значений в массиве
+		* `addZero` (num) - добавляет `0` к одноразрядным числам. ( `4` => `04` ) 
+		* `chtime` (sec) - секунды в человекопонятное время ( 5025 => 01:23:45 )
+
+* `msg` - объект сообщения
+	* `send` - отправить сообщение
+		* `edit` - отредактировать отправленное сообщение
+		* `pin` - закрепить
+	* `send` - отправить сообщение
+	* `reply` - ответить на сообщение
+	* `sendSticker` - отправить стикер
+	* `sendPhoto` - отправить фото
+	* `sendDoc` - отправить документ
+	* `sendGraffiti` - отправить граффити
+	* `sendAudioMessage` - отправить голосовое сообщение
+	* `get` - получить данные, которые не выдает longpoll
+	* `setActivity` - послать статус тайпинга
+	* `deleteDialog` - удалить диалог
+	* `delete` - удалить сообщение
+	* `restore` - восстановить сообщение или пометить как спам
+	* `markAsRead` - прочитать сообщение
+	* `markAsImportant` - отметить важным
+	* `markAsAnsweredDialog` - отметить отвеченным
+	* `editChat` - изменяет название беседы
+	* `getChatUsers` - получить участников беседы
+	* `getChat` - получить информацию о беседе
+	* `addChatUser` - добавить в беседе
+	* `removeChatUser` - удалить и беседе
+	* `edit` - отредактировать сообщение
+	* `pin` - закрепить сообщение
+	* `sendAttachment` - отправить сообщение с вложением
+	* `getInviteLink` - получить ссылку на беседу
