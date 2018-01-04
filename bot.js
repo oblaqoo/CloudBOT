@@ -99,9 +99,11 @@ var cbot = {
 		load:function(){ //подгрузка данных из БД
 			cbot.mysql.db.query("CREATE TABLE IF NOT EXISTS `all_chats_settings` ( `chat_id` int(11) NOT NULL, `freemode` int(1) NOT NULL DEFAULT '0', `voice` int(1) NOT NULL DEFAULT '1', `open` int(1) NOT NULL DEFAULT '0', `rules` varchar(800) NOT NULL DEFAULT 'В этом чате не установлены правила. Для того, чтобы установить правила отправьте !changerules и желаемые правила чата.', UNIQUE KEY `chat_id` (`chat_id`) ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;");
 			cbot.mysql.db.query("CREATE TABLE IF NOT EXISTS `chat_privilege` ( `id` int(11) NOT NULL AUTO_INCREMENT, `chat_id` int(11) NOT NULL, `user_id` int(11) NOT NULL, `lvl` int(11) NOT NULL, PRIMARY KEY (`id`) ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;");
+			cbot.mysql.db.query("INSERT INTO IF NOT EXISTS `chat_privilege` (`id`, `chat_id`, `user_id`, `lvl`) VALUES ('1', '0', '0', '0')");
 			cbot.mysql.db.query("CREATE TABLE IF NOT EXISTS `chat_settings` ( `id` int(11) NOT NULL AUTO_INCREMENT, `chat_id` int(11) NOT NULL, `max_warns` int(11) NOT NULL DEFAULT '3', `antimat` int(11) NOT NULL, `time` int(11) NOT NULL, `admin` int(11) NOT NULL, PRIMARY KEY (`id`) ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;");
+			cbot.mysql.db.query("INSERT INTO IF NOT EXISTS `chat_settings` (`id`, `chat_id`, `max_warns`, `antimat`, `time`, `admin`) VALUES ('1', '0', '0', '0', '0', '0')");
 			cbot.mysql.db.query('SELECT * FROM `chat_privilege`', function(err,result){ //загрузка модеров и админов
-				if(!result[0]) return console.log('[MYSQL] Failed to load privileges!');
+				if(!result[0]) return console.log(chalk.cyan('[MYSQL]')+chalk.redBright(' Failed to load privileges!'));
 				for(var i = 0; i < result.length; i++){
 					(cbot.service[(result[i].lvl==2?'admins':'moders')][result[i].chat_id]?cbot.service[(result[i].lvl==2?'admins':'moders')][result[i].chat_id].push(result[i].user_id):cbot.service[(result[i].lvl==2?'admins':'moders')][result[i].chat_id]=[result[i].user_id]);
 				}
