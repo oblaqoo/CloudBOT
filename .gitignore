@@ -62,5 +62,4 @@ config.js
 
 # Modules
 modules/cmd_cygan.js
-modules/antimat.js
 

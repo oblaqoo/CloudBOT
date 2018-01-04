@@ -9,6 +9,7 @@ module.exports = {
 	modules_place: 'modules', //местоположение папки с модулями
 	modules:[ //активные команды из папки cmds
 		"autostatus",
+		"antimat",
 		"cmd_time",
 		"cmd_warn",
 		"cmd_ban",
