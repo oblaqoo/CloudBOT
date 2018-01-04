@@ -61,5 +61,6 @@ typings/
 config.js
 
 # Modules
-modules/
+modules/cmd_cygan.js
+modules/antimat.js
 
