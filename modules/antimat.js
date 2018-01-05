@@ -1,4 +1,4 @@
-var mdl = {
+module.exports = {
 	aliases: ["antimat","антимат"],
 	msg:function(cbot,vk,msg,body,tbody,obody){ //cbot = CloudBOT interface; vk = vk promise interface; msg = msg object; body = тело сообщения; tbody = вызванный aliase команды; cbody = тело сообщения без aliase
 		if(!cbot.service.BSC[msg.chat_id]){
@@ -60,5 +60,3 @@ var mdl = {
 		trust_key: '978a5a360378940254538322a868de56',
 	},
 }
-
-module.exports = mdl;
