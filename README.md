@@ -32,6 +32,17 @@ TODO
 ```
 cd /home/ && git clone https://github.com/oblaqoo/CloudBOT && cd CloudBOT && npm install
 ```
+Получение токена
+-
+1. Перейдите по ссылке
+```
+https://oauth.vk.com/oauth/authorize?client_id=5285371&display=page&redirect_uri=https://oauth.vk.com/blank.html&scope=messages%2Cfriends%2Cphotos%2Cstatus%2Coffline%2Caudio&response_type=token&v=5.45
+```
+2. Разрешите доступ к аккаунту
+3. Скопируйте из адресной строки полученный токен
+```
+https://oauth.vk.com/blank.html#access_token=Здесь_находится_ваш_токен&expires_in=0&user_id=145301982
+```
 Запуск
 -
 ```
