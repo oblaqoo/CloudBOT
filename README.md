@@ -1,5 +1,23 @@
-CloudBOT NODE
+CloudBOT NODE 0.0.1
 =
+```
+ВНИМАНИЕ! CloudBOT NODE был отделён от основной версионной ветки! Версия CloudBOT NODE сброшена до 0.0.1.
+
+- Изменён шаблон модуля, старый более не поддерживается!
+- Один модуль теперь может содержать несколько чат-команд
+- Убраны консольные команды, т.к. от них одни проблемы :)
+- Модули cmd_admin, cmd_moder, cmd_ban, cmd_unban, cmd_warn, cmd_unwarn и cmd_kick объеденены в один basic_admin
+```
+
+Если бот не выгоняет пользователя из чата после команд ban и warn перейдите по пути .../node_modules/VK-Promise/ и измените файл index.js в строке 188:
+```
+return this.chatMethod("messages.removeChatUser", {message_id: this.id});
+```
+замените на
+```
+return this.chatMethod("messages.removeChatUser", {user_id});
+```
+
 Возможности
 -
 * Администрирование чатов
@@ -112,19 +130,23 @@ node bot.js
 -
 ```
  module.exports = {
-	aliases: ["команда","command","cmd","кмд","цмд"], //Синонимы команды, ТОЛЬКО МАЛЕНЬКИЕ БУКВЫ!
-	msg:function(cbot,vk,msg,body,alias,obody){ //cbot = CloudBOT interface; vk = vk promise interface; msg = msg object; body = тело сообщения; alias = вызванный alias команды; cbody = тело сообщения без alias
-		//Этот блок не является обязательным, уберите его если он не используется вашим модулем
-		//тут функционал чат-команды
-		msg.reply('ответ'); //так же доступны любые функции классов msg и cbot
+	msg:{ //Чат-Команды || Этот блок не является обязательным, уберите его если он не используется вашим модулем
+		'cmd':{ //здесь любое уникальное название команды, позволяющее команду идентифицировать
+			aliases: ["команда","command","cmd","кмд","цмд"], //Синонимы команды, ТОЛЬКО МАЛЕНЬКИЕ БУКВЫ!
+			go:function(cbot,vk,msg,body,alias,obody){ //cbot = CloudBOT interface; vk = vk promise interface; msg = msg object; body = тело сообщения; alias = вызванный alias команды; cbody = тело сообщения без alias
+				//тут функционал чат-команды
+				msg.reply('ответ'); //так же доступны любые функции классов msg и cbot
+			},
+		},
+		'twocmd':{ //здесь любое уникальное название команды, позволяющее команду идентифицировать
+			aliases: ["2команда","2command","twocmd","2кмд","2цмд"], //Синонимы команды, ТОЛЬКО МАЛЕНЬКИЕ БУКВЫ и цифры!
+			go:function(cbot,vk,msg,body,alias,obody){ //cbot = CloudBOT interface; vk = vk promise interface; msg = msg object; body = тело сообщения; alias = вызванный alias команды; cbody = тело сообщения без alias
+				//тут функционал чат-команды
+				msg.reply('ответ'); //так же доступны любые функции классов msg и cbot
+			},
+		},
 	},
-	con:function(cbot,vk,fbody,alias,args,body){ //cbot = CloudBOT interface; vk = vk promise interface; fbody = полное сообщение, введённое в консоль; alias = вызванный alias команды; args = аргументы; body = тело сообщения без alias
-		 //Этот блок не является обязательным, уберите его если он не используется вашим модулем
-		//тут функционал консольной комады
-		console.log('ответ'); //так же доступны любые функции классов vk и cbot
-	},
-	load: function(cbot, vk, cb){ 
-		//Этот блок не является обязательным, уберите его если он не используется вашим модулем
+	load: function(cbot, vk, cb){ //Этот блок не является обязательным, уберите его если он не используется вашим модулем
 		//тут функционал модуля, вызов при запуске модуля
 		//доступны vk и cbot
 		cb.on("message",function(msg){ //message event

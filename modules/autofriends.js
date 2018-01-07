@@ -1,5 +1,4 @@
 var mdl = {
-	aliases: ["autofriends"],
 	add_all:function(vk){
 		vk.friends.getRequests({
 			need_viewed: 1,

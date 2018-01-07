@@ -14,7 +14,6 @@ const mysql = require('mysql');
 var md5 = require("nodejs-md5");
 var request = require('request');
 var events = require('events');
-var stdin = process.openStdin();
 var cbot = {
 	service:{
 		ASC:{},
@@ -44,18 +43,22 @@ var cbot = {
 	},
 	modules:{
 		aliases:{},
-		aliases_with_console:{},
 		loaded:{},
 		trusted:[],
 		load_config:function(){ //загрузка модулей
 			for(var mi = 0; mi < config.modules.length; mi++){
-				cbot.modules.loaded[config.modules[mi]] = require('./'+config.modules_place+'/'+config.modules[mi]+'.js');
-				if(cbot.modules.loaded[config.modules[mi]].sign) cbot.trust.check(config.modules[mi]);
-				for(var vi = 0; vi < cbot.modules.loaded[config.modules[mi]].aliases.length; vi++){
-					if(cbot.modules.loaded[config.modules[mi]].msg) cbot.modules.aliases[cbot.modules.loaded[config.modules[mi]].aliases[vi]] = config.modules[mi];
-					if(cbot.modules.loaded[config.modules[mi]].con) cbot.modules.aliases_with_console[cbot.modules.loaded[config.modules[mi]].aliases[vi]] = config.modules[mi];
-					if((cbot.modules.loaded[config.modules[mi]].load) && (!cbot.modules.loaded[config.modules[mi]].sign)) cbot.modules.loaded[config.modules[mi]].load(cbot.sandbox, vk, cb);
+				var module = cbot.modules.loaded[config.modules[mi]] = require('./'+config.modules_place+'/'+config.modules[mi]+'.js');
+				if(module.sign) cbot.trust.check(config.modules[mi]);
+				if(module.msg){
+					for(var key in module.msg){
+						for(var vi = 0; vi < module.msg[key].aliases.length; vi++){
+							if(!module.aliases) module.aliases = {};
+							module.aliases[module.msg[key].aliases[vi]] = key;
+							cbot.modules.aliases[module.msg[key].aliases[vi]] = config.modules[mi];
+						}
+					}
 				}
+				if((module.load) && (!module.sign)) module.load(cbot.sandbox, vk, cb);
 				console.log(chalk.cyan('[MODULES]')+chalk.green(' Module '+chalk.yellow(config.modules[mi])+' loaded'));
 			}
 			console.log(chalk.cyan('[MODULES]')+chalk.blueBright(' Loading modules completed!'));
@@ -63,18 +66,22 @@ var cbot = {
 		load:function(module){ //загрузка модуля
 			cbot.modules.loaded[module] = require('./'+config.modules_place+'/'+module+'.js');
 			if(cbot.modules.loaded[module].sign) cbot.trust.check(module);
-			for(var vi = 0; vi < cbot.modules.loaded[module].aliases.length; vi++){
-				if(cbot.modules.loaded[module].msg) cbot.modules.aliases[cbot.modules.loaded[module].aliases[vi]] = module;
-				if(cbot.modules.loaded[module].con) cbot.modules.aliases_with_console[cbot.modules.loaded[module].aliases[vi]] = module;
-				if(cbot.modules.loaded[module].load) cbot.modules.loaded[module].load(cbot.sandbox, vk, cb);
+			if(cbot.modules.loaded[module].msg){
+				for(var key in cbot.modules.loaded[module].msg){
+					for(var vi = 0; vi < cbot.modules.loaded[module].msg[key].aliases.length; vi++){
+						if(!cbot.modules.loaded[module].aliases) cbot.modules.loaded[module].aliases = {};
+						cbot.modules.loaded[module].aliases[cbot.modules.loaded[module].msg[key].aliases[vi]] = key;
+						cbot.modules.aliases[cbot.modules.loaded[module].msg[key].aliases[vi]] = module;
+					}
+				}
 			}
+			if((cbot.modules.loaded[module].load) && (!cbot.modules.loaded[module].sign)) cbot.modules.loaded[module].load(cbot.sandbox, vk, cb);
 			console.log(chalk.cyan('[MODULES]')+chalk.green(' Module '+chalk.yellow(module)+' loaded'));
 		},
 		unload:function(module){
 			if(cbot.modules.loaded[module])
 				for(var vi = 0; vi < cbot.modules.loaded[module].aliases.length; vi++){
 					if(cbot.modules.loaded[module].msg) cbot.modules.aliases[cbot.modules.loaded[module].aliases[vi]] = null;
-					if(cbot.modules.loaded[module].con) cbot.modules.aliases_with_console[cbot.modules.loaded[module].aliases[vi]] = null;
 				}
 			cbot.modules.loaded[module] = null;
 			console.log(chalk.cyan('[MODULES]')+chalk.green(' Module '+chalk.yellow(module)+' unloaded'));
@@ -110,14 +117,16 @@ var cbot = {
 			cbot.mysql.db.query("CREATE TABLE IF NOT EXISTS `chat_settings` ( `id` int(11) NOT NULL AUTO_INCREMENT, `chat_id` int(11) NOT NULL, `max_warns` int(11) NOT NULL DEFAULT '3', `antimat` int(11) NOT NULL, `time` int(11) NOT NULL, `admin` int(11) NOT NULL, PRIMARY KEY (`id`) ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;");
 			cbot.mysql.db.query("INSERT IGNORE INTO `chat_settings` (`id`, `chat_id`, `max_warns`, `antimat`, `time`, `admin`) VALUES ('1', '0', '0', '0', '0', '0')");
 			cbot.mysql.db.query('SELECT * FROM `chat_privilege`', function(err,result){ //загрузка модеров и админов
-				if(!result[0]) return console.log(chalk.cyan('[MYSQL]')+chalk.redBright(' Failed to load privileges!'));
+				if(err) return console.log(chalk.cyan('[MYSQL]')+chalk.redBright(' Failed to load privileges!'), err);
+				if(!result[0]) return;
 				for(var i = 0; i < result.length; i++){
 					(cbot.service[(result[i].lvl==2?'admins':'moders')][result[i].chat_id]?cbot.service[(result[i].lvl==2?'admins':'moders')][result[i].chat_id].push(result[i].user_id):cbot.service[(result[i].lvl==2?'admins':'moders')][result[i].chat_id]=[result[i].user_id]);
 				}
 				console.log(chalk.cyan('[MYSQL]')+chalk.green(' Privileges successfully loaded!'));
 			});
 			cbot.mysql.db.query('SELECT * FROM `chat_settings`', function(err,result){ //загрузка настроек чатов
-				if(!result[0]) return console.log(chalk.cyan('[MYSQL]')+chalk.redBright(' Failed to load chats settings!'));
+				if(err) return console.log(chalk.cyan('[MYSQL]')+chalk.redBright(' Failed to load chats settings!'), err);
+				if(!result[0]) return;
 				for(var i = 0; i < result.length; i++){
 					if(!result[0]) return;
 					cbot.service.BSC[result[0].chat_id] = result[0];
@@ -256,8 +265,9 @@ vk.on("message",function(event, msg){
 				msg.reply(config.v);
 				break;
 			default:
+				var mdl = cbot.modules.loaded[cbot.modules.aliases[sms[0]]];
+				if(mdl.msg[mdl.aliases[sms[0]]])mdl.msg[mdl.aliases[sms[0]]].go((cbot.utils.array_find(cbot.modules.trusted,cbot.modules.aliases[sms[0]])+1?cbot:cbot.sandbox),vk,msg,msg.body,sms[0],msg.body.replace(sms[0]+" ",""));
 				cb.emit('message', msg);
-				if(cbot.modules.loaded[cbot.modules.aliases[sms[0]]].msg)cbot.modules.loaded[cbot.modules.aliases[sms[0]]].msg((cbot.utils.array_find(cbot.modules.trusted,cbot.modules.aliases[sms[0]])+1?cbot:cbot.sandbox),vk,msg,msg.body,sms[0],msg.body.replace(sms[0]+" ",""));
 				break;
 		}
 	   
@@ -265,43 +275,5 @@ vk.on("message",function(event, msg){
 		if(msg.action == "chat_kick_user"){
 			msg.send("хах ливнул петушара");
 		}
-	}
-});
-stdin.on('data', function(chunk){
-	var cmd = chunk.toString('utf8').toLowerCase().replace("\n","").split(" ");
-	switch(cmd[0]){
-		case 'v':
-		case 'version':
-			console.log(config.v);
-			break;
-		case 'reload':
-			vk.longpoll.stop().then(function(data){
-				console.log(chalk.cyan('[LongPool]')+chalk.redBright(' Disconnected!'));
-				console.log(chalk.cyan('[RELOAD]')+chalk.redBright(' Unload modules...'));
-				cbot.modules.aliases = {};
-				cbot.modules.aliases_with_console = {};
-				cbot.modules.loaded = {};
-				cbot.modules.load_config();
-				cbot.mysql.db.end(function(err){
-					if(err) return console.log(chalk.cyan('[RELOAD]')+chalk.redBright(err));
-					console.log(chalk.cyan('[RELOAD]')+chalk.redBright(" Database connection ended"));
-				});
-				cbot.mysql.connect();
-				setTimeout(function(){vk.longpoll.start();console.log(chalk.cyan('[LongPool]')+chalk.green(' Connected!'));}, 4000);
-			});
-			break;
-		case 'start':
-			cbot.modules.load(cmd[1]);
-			break;
-		case 'stop':
-			cbot.modules.unload(cmd[1]);
-			break;
-		case 'restart':
-			cbot.modules.load(cmd[1]);
-			setTimeout(function(){cbot.modules.unload(cmd[1])},1000);
-			break;
-		default:
-			if(cbot.modules.aliases_with_console[cmd[0]]) cbot.modules.loaded[cbot.modules.aliases_with_console[cmd[0]]].con((cbot.utils.array_find(cbot.modules.trusted,cbot.modules.aliases[cmd[0]])+1?cbot:cbot.sandbox),vk,chunk.toString('utf8'),cmd[0],cmd,chunk.toString('utf8').replace(cmd[0]+" ",""));
-			break;
 	}
 });

@@ -1,6 +1,5 @@
 var os = require('os');
 var mdl = {
-	aliases: ["autostatus"],
 	counters:{
 		msg: 0,
 		chats: 0,
@@ -39,8 +38,8 @@ var mdl = {
 	},
 	sign:{
 		issuer: 1,
-		version: 0.1,
-		trust_key: '65b5c0ef3cf5ab1b4324d21a8d460118',
+		version: 0.2,
+		trust_key: 'd70f5ea9a4efb4a838f18c4ef8bea232',
 	},
 }
 
