@@ -6,6 +6,12 @@ module.exports = {
 	bd_user: 'cbot', //Пользователь mysql
 	bd_password: 'password', //Пароль пользователя mysql
 	bd_db: 'database', //База данных mysql
+	web_port: 8080,
+	captcha:{
+		apiKey: 'key', //API KEY ruCaptcha, брать здесь: https://rucaptcha.com/enterpage
+		dir: './tmp', //директория для загрузки капчи
+		delay: 1000, //интервал проверки капчи
+	},
 	modules_place: 'modules', //местоположение папки с модулями
 	modules:[ //активные команды из папки cmds
 		"antimat",
