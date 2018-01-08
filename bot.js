@@ -241,10 +241,10 @@ vk.on("message",function(event, msg){
 	if(msg.action){
 		switch(msg.action){
 			case 'chat_photo_update':
-				console.log(chalk.redBright('[MSG ACTION] ')+chalk.yellow('vk.com/id'+msg.user_id+' обновил фотографию чата '+msg.chat_id));
+				console.log(chalk.redBright('[MSG ACTION] ')+chalk.yellow('vk.com/id'+msg.user_id+' обновил фотографию чата `'+msg.title+'`'));
 				break;
 			case 'chat_photo_remove':
-				console.log(chalk.redBright('[MSG ACTION] ')+chalk.yellow('vk.com/id'+msg.user_id+' удалил фотографию чата '+msg.chat_id));
+				console.log(chalk.redBright('[MSG ACTION] ')+chalk.yellow('vk.com/id'+msg.user_id+' удалил фотографию чата `'+msg.title+'`'));
 				break;
 			case 'chat_create':
 				console.log(chalk.redBright('[MSG ACTION] ')+chalk.yellow('vk.com/id'+msg.user_id+' создал новый чат `'+msg.action_text+'`'));
