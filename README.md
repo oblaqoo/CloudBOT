@@ -32,7 +32,7 @@ return this.chatMethod("messages.removeChatUser", {user_id});
     > Загружаемые модули запускаются по умолчанию в песочнице если они не прошли модерацию или не активен режим разработчика
 * Long Polling 
     > Бот получает сообщения мгновенно с помощью технологии Long Polling
-* Анти-Капча `В процессе`
+* Анти-Капча
     > Обработка капчи с помощью сервиса RuCaptcha
 * Удобная конфигурация
 	> Вам не требуется копаться в коде для настройки бота. Просто создайте файл `config.js` с содержимым `config_default.js`.
@@ -42,6 +42,7 @@ return this.chatMethod("messages.removeChatUser", {user_id});
 TODO
 -
 - [X] Автодобавление в друзья
+- [X] Анти-Капча
 - [ ] Псевдоинтеллект
 - [ ] Web-Панель
 - [ ] Управление чатами через web-панель
@@ -50,6 +51,11 @@ TODO
 -
 ```
 cd /home/ && git clone https://github.com/oblaqoo/CloudBOT && cd CloudBOT && npm install
+```
+Обновление
+-
+```
+cd /home/CloudBOT && git pull && npm install
 ```
 Получение токена
 -

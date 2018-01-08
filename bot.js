@@ -14,7 +14,9 @@ const mysql = require('mysql');
 var md5 = require("nodejs-md5");
 var request = require('request');
 var events = require('events');
+var RuCaptcha = require('./rucaptcha.js');
 var cbot = {
+	config: config,
 	service:{
 		ASC:{},
 		BSC:{},
@@ -181,6 +183,7 @@ var cbot = {
 		},
 	},
 	sandbox:{
+		config: config,
 		service:{
 			is_admin:function(chat_id, user_id){
 				return cbot.service.is_admin(chat_id, user_id);
@@ -224,6 +227,11 @@ var cb = new events.EventEmitter();
 cbot.mysql.connect();
 cbot.modules.load_config();
 setTimeout(function(){vk.longpoll.start();console.log(chalk.cyan('[LongPool]')+chalk.green(' Connected!'));}, 4000);
+var captcha = new RuCaptcha({
+	apiKey: config.captcha.apiKey,
+	tmpDir: config.captcha.dir,
+	checkDelay: config.captcha.delay,
+});
 //-------------------------------
 vk.on("message",function(event, msg){
 	cbot.sandbox.service.counters.messages.all++;
@@ -276,4 +284,12 @@ vk.on("message",function(event, msg){
 			msg.send("хах ливнул петушара");
 		}
 	}
+});
+vk.on("captcha",function(event, data){
+	captcha.solve(data.captcha_img, function(err, answer){
+		if(err)
+			console.log(chalk.cyan('[CAPCHA] ')+chalk.redBright('ERR! '),err);
+		else
+			data.submit(answer);
+	});
 });
