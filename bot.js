@@ -237,6 +237,41 @@ vk.on("message",function(event, msg){
 	cbot.sandbox.service.counters.messages.all++;
 	cbot.service.counters.messages.all++;
 	if(msg.out==true)console.log(chalk.cyan('[MESSAGE]')+chalk.magenta(' OUT')+': '+chalk.yellow(msg.body));
+	//actions
+	if(msg.action){
+		switch(msg.action){
+			case 'chat_photo_update':
+				console.log(chalk.redBright('[MSG ACTION] ')+chalk.yellow(msg.user_id+' обновил фотографию чата '+msg.chat_id));
+				break;
+			case 'chat_photo_remove':
+				console.log(chalk.redBright('[MSG ACTION] ')+chalk.yellow(msg.user_id+' удалил фотографию чата '+msg.chat_id));
+				break;
+			case 'chat_create':
+				console.log(chalk.redBright('[MSG ACTION] ')+chalk.yellow(msg.user_id+' создал новый чат `'+msg.action_text+'`'));
+				break;
+			case 'chat_title_update':
+				console.log(chalk.redBright('[MSG ACTION] ')+chalk.yellow(msg.user_id+' обновил название чата `'+msg.title+'` -> `'+msg.action_text+'`'));
+				break;
+			case 'chat_invite_user':
+				console.log(chalk.redBright('[MSG ACTION] ')+chalk.yellow(msg.user_id+(msg.user_id==msg.action_mid?' вернулся':' пригласил '+msg.action_mid)+' в чат `'+msg.title+'`'));
+				break;
+			case 'chat_kick_user':
+				console.log(chalk.redBright('[MSG ACTION] ')+chalk.yellow(msg.user_id+(msg.user_id==msg.action_mid?' вышел':' выгнал '+msg.action_mid)+' из чата `'+msg.title+'`'));
+				break;
+			case 'chat_pin_message':
+				console.log(chalk.redBright('[MSG ACTION] ')+chalk.yellow(msg.user_id+' закрепил сообщение в чате `'+msg.title+'`: '+msg.action_text));
+				break;
+			case 'chat_unpin_message':
+				console.log(chalk.redBright('[MSG ACTION] ')+chalk.yellow(msg.user_id+' открепил сообщение в чате `'+msg.title+'`'));
+				break;
+			case 'chat_invite_user_by_link':
+				console.log(chalk.redBright('[MSG ACTION] ')+chalk.yellow(msg.action_mid+' присоединился к чату `'+msg.title+'` по ссылке'));
+				break;
+			default:
+				console.log(chalk.redBright('[MSG ACTION] '),msg.action,msg.action_mid,msg.action_text);
+				break;
+		}
+	}
 	if(msg.out == false){
 		//if(msg.chat_id==59) console.log(msg);
 		console.log(chalk.cyan('[MESSAGE]')+chalk.redBright(' vk.com/id'+msg.user_id+(msg.chat_id?chalk.magenta(' (chat:'+msg.chat_id+')'):''))+': '+chalk.green(msg.body));
@@ -277,42 +312,6 @@ vk.on("message",function(event, msg){
 				if(mdl.msg[mdl.aliases[sms[0]]])mdl.msg[mdl.aliases[sms[0]]].go((cbot.utils.array_find(cbot.modules.trusted,cbot.modules.aliases[sms[0]])+1?cbot:cbot.sandbox),vk,msg,msg.body,sms[0],msg.body.replace(sms[0]+" ",""));
 				cb.emit('message', msg);
 				break;
-		}
-	   
-		//actions
-		if(msg.action){
-			switch(msg.action){
-				case 'chat_photo_update':
-					console.log(chalk.redBright('[MSG ACTION] ')+chalk.yellow(msg.user_id+' обновил фотографию чата '+msg.chat_id));
-					break;
-				case 'chat_photo_remove':
-					console.log(chalk.redBright('[MSG ACTION] ')+chalk.yellow(msg.user_id+' удалил фотографию чата '+msg.chat_id));
-					break;
-				case 'chat_create':
-					console.log(chalk.redBright('[MSG ACTION] ')+chalk.yellow(msg.user_id+' создал новый чат `'+msg.action_text+'`'));
-					break;
-				case 'chat_title_update':
-					console.log(chalk.redBright('[MSG ACTION] ')+chalk.yellow(msg.user_id+' обновил название чата `'+msg.title+'` -> `'+msg.action_text+'`'));
-					break;
-				case 'chat_invite_user':
-					console.log(chalk.redBright('[MSG ACTION] ')+chalk.yellow(msg.user_id+' пригласил '+msg.action_mid+' в чат `'+msg.title+'`'));
-					break;
-				case 'chat_kick_user':
-					console.log(chalk.redBright('[MSG ACTION] ')+chalk.yellow(msg.user_id+(msg.user_id==msg.action_mid?' вышел':' выгнал '+msg.action_mid)+' из чата `'+msg.title+'`'));
-					break;
-				case 'chat_pin_message':
-					console.log(chalk.redBright('[MSG ACTION] ')+chalk.yellow(msg.user_id+' закрепил сообщение в чате `'+msg.title+'`: '+msg.action_text));
-					break;
-				case 'chat_unpin_message':
-					console.log(chalk.redBright('[MSG ACTION] ')+chalk.yellow(msg.user_id+' открепил сообщение в чате `'+msg.title+'`'));
-					break;
-				case 'chat_invite_user_by_link':
-					console.log(chalk.redBright('[MSG ACTION] ')+chalk.yellow(msg.action_mid+' присоединился к чату `'+msg.title+'` по ссылке'));
-					break;
-				default:
-					console.log(chalk.redBright('[MSG ACTION] '),msg.action,msg.action_mid,msg.action_text);
-					break;
-			}
 		}
 	}
 });
