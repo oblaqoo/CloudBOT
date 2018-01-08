@@ -70,7 +70,7 @@ var RuCaptcha = function(params){
         min_leng: 0,
         max_len:  0,
         language: 0,
-        soft_id: 2853725
+        soft_id: 2050
       }
     }, function(err, res, body){
       if (res.statusCode === 200 && !err && body.indexOf('ERROR') === -1)
