@@ -12,10 +12,13 @@
   "dependencies": {
     "VK-Promise": "^0.2.91",
     "chalk": "^2.3.0",
+    "connect": "^3.6.5",
     "events": "^1.1.1",
     "fs": "0.0.1-security",
+    "mkdirp": "^0.5.1",
     "mysql": "^2.15.0",
     "nodejs-md5": "^1.0.2",
-    "request": "^2.83.0"
+    "request": "^2.83.0",
+    "serve-static": "^1.13.1"
   }
 }
