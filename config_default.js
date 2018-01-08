@@ -7,6 +7,7 @@ module.exports = {
 	bd_password: 'password', //Пароль пользователя mysql
 	bd_db: 'database', //База данных mysql
 	web_port: 8080,
+	tmp: './tmp', //временная папка
 	captcha:{
 		apiKey: 'key', //API KEY ruCaptcha, брать здесь: https://rucaptcha.com/enterpage
 		dir: './tmp', //директория для загрузки капчи
