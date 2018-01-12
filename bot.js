@@ -236,6 +236,9 @@ var captcha = new RuCaptcha({
 vk.on("message",function(event, msg){
 	cbot.sandbox.service.counters.messages.all++;
 	cbot.service.counters.messages.all++;
+	cb.emit('message', msg);
+	var sms = msg.body.toLowerCase().split(" ");
+	if(!cbot.modules.aliases[sms[0]]) cb.emit('mwa', msg);
 	if(msg.out==true)console.log(chalk.cyan('[MESSAGE]')+chalk.magenta(' OUT')+': '+chalk.yellow(msg.body));
 	//actions
 	if(msg.action){
@@ -301,7 +304,6 @@ vk.on("message",function(event, msg){
 		}
 		
 		//cmds
-		var sms = msg.body.toLowerCase().split(" ");
 		switch(sms[0]){
 			case 'v':
 			case 'version':
@@ -310,7 +312,6 @@ vk.on("message",function(event, msg){
 			default:
 				var mdl = cbot.modules.loaded[cbot.modules.aliases[sms[0]]];
 				if(mdl.msg[mdl.aliases[sms[0]]])mdl.msg[mdl.aliases[sms[0]]].go((cbot.utils.array_find(cbot.modules.trusted,cbot.modules.aliases[sms[0]])+1?cbot:cbot.sandbox),vk,msg,msg.body,sms[0],msg.body.replace(msg.body.split(" ")[0]+" ",""));
-				cb.emit('message', msg);
 				break;
 		}
 	}
