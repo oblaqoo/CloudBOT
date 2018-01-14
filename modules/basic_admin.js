@@ -220,6 +220,7 @@ module.exports = {
 						} else{
 							var bd_warn_count = result[0].count + 1;
 							cbot.mysql.db.query('UPDATE `chat_privilege` SET `lvl` = ? WHERE `user_id` = ? AND `chat_id` = ?', [2, ban_uid, msg.chat_id]);
+							(cbot.service['admins'][msg.chat_id]?cbot.service['admins'][msg.chat_id].push(msg.user_id):cbot.service['admins'][msg.chat_id]=[msg.user_id]);
 						}
 						vk.users.get({
 							user_id: ban_uid, // данные передаваемые API
@@ -259,6 +260,7 @@ module.exports = {
 						} else{
 							var bd_warn_count = result[0].count + 1;
 							cbot.mysql.db.query('UPDATE `chat_privilege` SET `lvl` = ? WHERE `user_id` = ? AND `chat_id` = ?', [1, ban_uid, msg.chat_id]);
+							(cbot.service['moders'][msg.chat_id]?cbot.service['moders'][msg.chat_id].push(msg.user_id):cbot.service['moders'][msg.chat_id]=[msg.user_id]);
 						}
 						vk.users.get({
 							user_id: ban_uid, // данные передаваемые API
