@@ -1,6 +1,7 @@
 module.exports = {
 	token: 'token', //access_token аккаунта бота
 	v: 'CloudBOT NODE v0.0.1 by oblaqoo | 07 jan 2018',
+	vnum: '0.0.1',
 	bot_id: 348877376, //id аккаунта бота
 	bd_host: 'localhost', //Адрес сервера mysql
 	bd_user: 'cbot', //Пользователь mysql
