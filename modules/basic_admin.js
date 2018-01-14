@@ -9,7 +9,7 @@ module.exports = {
 				}
 				var acheck = cbot.service.lvl_check(msg.chat_id,msg.user_id);
 				if(acheck < 1){
-					msg.reply('К сожалению, Вы не администратор этого чата!');
+					msg.reply('К сожалению, Вы не администратор/модератор этого чата!');
 					return;
 				}
 				msg.get().then(function(ddata){
@@ -45,7 +45,7 @@ module.exports = {
 				}
 				var acheck = cbot.service.lvl_check(msg.chat_id,msg.user_id);
 				if(acheck < 1){
-					msg.reply('К сожалению, Вы не администратор этого чата!');
+					msg.reply('К сожалению, Вы не администратор/модератор этого чата!');
 					return;
 				}
 				msg.get().then(function(ddata){
@@ -75,7 +75,7 @@ module.exports = {
 				}
 				var acheck = cbot.service.lvl_check(msg.chat_id,msg.user_id);
 				if(acheck < 1){
-					msg.reply('К сожалению, Вы не администратор этого чата!');
+					msg.reply('К сожалению, Вы не администратор/модератор этого чата!');
 					return;
 				}
 				msg.get().then(function(ddata){
@@ -125,7 +125,7 @@ module.exports = {
 				}
 				var acheck = cbot.service.lvl_check(msg.chat_id,msg.user_id);
 				if(acheck < 1){
-					msg.reply('К сожалению, Вы не администратор этого чата!');
+					msg.reply('К сожалению, Вы не администратор/модератор этого чата!');
 					return;
 				}
 				msg.get().then(function(ddata){
@@ -168,7 +168,7 @@ module.exports = {
 				}
 				var acheck = cbot.service.lvl_check(msg.chat_id,msg.user_id);
 				if(acheck < 1){
-					msg.reply('К сожалению, Вы не администратор этого чата!');
+					msg.reply('К сожалению, Вы не администратор/модератор этого чата!');
 					return;
 				}
 				msg.get().then(function(ddata){
@@ -201,7 +201,7 @@ module.exports = {
 					return;
 				}
 				var acheck = cbot.service.lvl_check(msg.chat_id,msg.user_id);
-				if(acheck < 1){
+				if(acheck < 2){
 					msg.reply('К сожалению, Вы не администратор этого чата!');
 					return;
 				}
@@ -241,7 +241,7 @@ module.exports = {
 					return;
 				}
 				var acheck = cbot.service.lvl_check(msg.chat_id,msg.user_id);
-				if(acheck < 1){
+				if(acheck < 2){
 					msg.reply('К сожалению, Вы не администратор этого чата!');
 					return;
 				}
@@ -278,7 +278,7 @@ module.exports = {
 			go:function(cbot,vk,msg,body,tbody,obody){ //cbot = CloudBOT interface; vk = vk promise interface; msg = msg object; body = тело сообщения; tbody = вызванный aliase команды; cbody = тело сообщения без aliase
 				var acheck = cbot.service.lvl_check(msg.chat_id,msg.user_id);
 				if(acheck < 1){
-					msg.reply('К сожалению, Вы не администратор этого чата!');
+					msg.reply('К сожалению, Вы не администратор/модератор этого чата!');
 					return;
 				}
 				msg.reply("OpenMode активирован для этого чата. Теперь любой может вступить в чат здесь: https://vk.cc/7AjkXP");
@@ -291,7 +291,7 @@ module.exports = {
 			go:function(cbot,vk,msg,body,tbody,obody){ //cbot = CloudBOT interface; vk = vk promise interface; msg = msg object; body = тело сообщения; tbody = вызванный aliase команды; cbody = тело сообщения без aliase
 				var acheck = cbot.service.lvl_check(msg.chat_id,msg.user_id);
 				if(acheck < 1){
-					msg.reply('К сожалению, Вы не администратор этого чата!');
+					msg.reply('К сожалению, Вы не администратор/модератор этого чата!');
 					return;
 				}
 				msg.reply("OpenMode деактивирован для этого чата. Теперь в чат можно вступить только по приглашению участников чата");
@@ -310,7 +310,7 @@ module.exports = {
 			go:function(cbot,vk,msg,body,tbody,obody){ //cbot = CloudBOT interface; vk = vk promise interface; msg = msg object; body = тело сообщения; tbody = вызванный aliase команды; cbody = тело сообщения без aliase
 				var acheck = cbot.service.lvl_check(msg.chat_id,msg.user_id);
 				if(acheck < 1){
-					msg.reply('К сожалению, Вы не администратор этого чата!');
+					msg.reply('К сожалению, Вы не администратор/модератор этого чата!');
 					return;
 				}
 				if(obody.length >= 800) return msg.reply("Не больше 800 символов!");
