@@ -21,6 +21,7 @@ module.exports = {
 		"basic_admin",
 		"cmd_time",
 		"cmd_ball",
+		"cmd_say",
 	],
 	dev_mode: false,
 };
