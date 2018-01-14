@@ -15,7 +15,7 @@ var md5 = require("nodejs-md5");
 var request = require('request');
 var events = require('events');
 var RuCaptcha = require('./rucaptcha.js');
-var cbot = {
+global.cbot = {
 	config: config,
 	service:{
 		ASC:{},
@@ -130,11 +130,18 @@ var cbot = {
 				if(err) return console.log(chalk.cyan('[MYSQL]')+chalk.redBright(' Failed to load chats settings!'), err);
 				if(!result[0]) return;
 				for(var i = 0; i < result.length; i++){
-					if(!result[0]) return;
-					cbot.service.BSC[result[0].chat_id] = result[0];
-					cbot.service.BSC_cache.push(result[0].chat_id);
+					cbot.service.BSC[result[i].chat_id] = result[i];
+					cbot.service.BSC_cache.push(result[i].chat_id);
 				}
 				console.log(chalk.cyan('[MYSQL]')+chalk.green(' Chats settings successfully loaded!'));
+			});
+			cbot.mysql.db.query('SELECT * FROM `all_chats_settings`', function(err,result){ //загрузка настроек чатов
+				if(err) return console.log(chalk.cyan('[MYSQL]')+chalk.redBright(' Failed to load allchats settings!'), err);
+				if(!result[0]) return;
+				for(var i = 0; i < result.length; i++){
+					cbot.service.ASC[result[i].chat_id] = result[i];
+				}
+				console.log(chalk.cyan('[MYSQL]')+chalk.green(' ALLChats settings successfully loaded!'));
 			});
 		},
 	},
@@ -234,10 +241,10 @@ var captcha = new RuCaptcha({
 });
 //-------------------------------
 vk.on("message",function(event, msg){
+	var sms = msg.body.toLowerCase().split(" ");
 	cbot.sandbox.service.counters.messages.all++;
 	cbot.service.counters.messages.all++;
 	cb.emit('message', msg);
-	var sms = msg.body.toLowerCase().split(" ");
 	if(!cbot.modules.aliases[sms[0]]) cb.emit('mwa', msg);
 	if(msg.out==true)console.log(chalk.cyan('[MESSAGE]')+chalk.magenta(' OUT')+': '+chalk.yellow(msg.body));
 	//actions

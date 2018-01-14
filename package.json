@@ -15,10 +15,12 @@
     "connect": "^3.6.5",
     "events": "^1.1.1",
     "fs": "0.0.1-security",
+    "handlebars": "^4.0.11",
+    "mime": "^2.2.0",
     "mkdirp": "^0.5.1",
     "mysql": "^2.15.0",
     "nodejs-md5": "^1.0.2",
     "request": "^2.83.0",
-    "serve-static": "^1.13.1"
+    "url": "^0.11.0"
   }
 }

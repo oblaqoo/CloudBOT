@@ -66,3 +66,6 @@ modules/cmd_say.js
 
 # Temp
 tmp/
+
+# etc
+logo/
