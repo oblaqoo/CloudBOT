@@ -320,6 +320,21 @@ module.exports = {
 				msg.send("Правила чата изменены!\n\n"+obody);
 			},
 		},
+		'max_warns':{
+			aliases: ["maxwarns"],
+			go:function(cbot,vk,msg,body,tbody,obody){ //cbot = CloudBOT interface; vk = vk promise interface; msg = msg object; body = тело сообщения; tbody = вызванный aliase команды; cbody = тело сообщения без aliase
+				var acheck = cbot.service.lvl_check(msg.chat_id,msg.user_id);
+				if(acheck < 1){
+					msg.reply('К сожалению, Вы не администратор/модератор этого чата!');
+					return;
+				}
+				var count = Number(obody.replace(/\D+/g,""));
+				if(!count) return msg.reply("Введите количество макимальных предупреждений! Например:\n\nmaxwarns 10");
+				cbot.mysql.db.query('UPDATE `chat_settings` SET `max_warns` = ? WHERE `chat_id` = ?', [count, msg.chat_id]);
+				cbot.service.BSC[msg.chat_id].max_warns = count;
+				msg.send('[id'+msg.user_id+'|Администратор] установил максимальное количество предупреждений значением - '+count+'. При получении '+(count+1)+' предупреждения нарушитель порядка будет заблокирован!');
+			},
+		},
 	},
 	load:function(cbot,vk,cb){
 		cbot.mysql.db.query("CREATE TABLE IF NOT EXISTS `ban` ( `id` int(11) NOT NULL AUTO_INCREMENT, `user_id` int(11) NOT NULL, `chat_id` int(11) NOT NULL, PRIMARY KEY (`id`) ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;");
