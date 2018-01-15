@@ -1,5 +1,3 @@
-var fs = require('fs'),
-	gm = require('gm').subClass({imageMagick: true});
 module.exports = {
 	msg:{
 		'info':{
@@ -13,10 +11,5 @@ module.exports = {
 				});
 			},
 		},
-	},
-	sign:{
-		issuer: 1,
-		version: 0.1,
-		trust_key: 'key',
 	},
 }
