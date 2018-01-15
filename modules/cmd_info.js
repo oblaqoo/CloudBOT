@@ -12,4 +12,9 @@ module.exports = {
 			},
 		},
 	},
+	sign:{
+		issuer: 1,
+		version: 0.1,
+		trust_key: '068bb88d797e07616e9f392dfe436007',
+	},
 }
