@@ -61,6 +61,7 @@ module.exports = {
 					}).then(function (ban_user_info){
 						ban_user_info = ban_user_info[0];
 						cbot.mysql.db.query('DELETE FROM `ban` WHERE user_id = ? AND chat_id = ?', [ban_uid, msg.chat_id]);
+						cbot.mysql.db.query('DELETE FROM `warns` WHERE user_id = ? AND chat_id = ?', [ban_uid, msg.chat_id]);
 						msg.send("[id"+ban_uid+"|"+ban_user_info.first_name+" "+ban_user_info.last_name+"] разбанен"+(ban_user_info.sex==1?'а':'')+" в этом чате [id"+msg.user_id+"|Администратором].");
 					});
 				});
@@ -320,9 +321,45 @@ module.exports = {
 			},
 		},
 	},
-	load:function(cbot,vk){
+	load:function(cbot,vk,cb){
 		cbot.mysql.db.query("CREATE TABLE IF NOT EXISTS `ban` ( `id` int(11) NOT NULL AUTO_INCREMENT, `user_id` int(11) NOT NULL, `chat_id` int(11) NOT NULL, PRIMARY KEY (`id`) ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;");
 		cbot.mysql.db.query("CREATE TABLE IF NOT EXISTS `warns` ( `id` int(11) NOT NULL AUTO_INCREMENT, `user_id` int(11) NOT NULL, `count` int(11) NOT NULL, `chat_id` int(11) NOT NULL, PRIMARY KEY (`id`) ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;");
+		cb.on("mwa",function(msg){
+			if((msg.action) && ((msg.action == 'chat_invite_user') || (msg.action == 'chat_invite_user_by_link'))){
+				cbot.mysql.db.query('SELECT * FROM `ban` WHERE chat_id = ? AND user_id = ?', [msg.chat_id,msg.action_mid], function(err,result){
+					if(!result[0]) return;
+					if(msg.action == 'chat_invite_user_by_link'){
+						msg.send('This user has been banned!');
+						msg.removeChatUser(msg.action_mid);
+					}
+					chat_info = cbot.service.BSC[msg.chat_id];
+					cbot.mysql.db.query('SELECT * FROM `warns` WHERE chat_id = ? AND user_id = ?', [msg.chat_id,msg.user_id], function(err,result){
+						if(!result[0]){
+							var dd = {user_id: msg.user_id, chat_id: msg.chat_id, count: 1};
+							cbot.mysql.db.query('INSERT INTO `warns` SET ?', dd);
+							var bd_warn_count = 1;
+						} else{
+							var bd_warn_count = result[0].count + 1;
+							cbot.mysql.db.query('UPDATE `warns` SET `count` = ? WHERE `user_id` = ? AND `chat_id` = ?', [bd_warn_count, msg.user_id, msg.chat_id]);
+						}
+						vk.users.get({
+							user_id: msg.user_id, // данные передаваемые API
+							fields: 'name,lastname,sex'
+						}).then(function (ban_user_info){
+							ban_user_info = ban_user_info[0];
+							if(bd_warn_count > chat_info.max_warns){
+								cbot.mysql.db.query('INSERT INTO `ban` SET ?', {user_id: msg.user_id, chat_id: msg.chat_id});
+								msg.send("[id"+msg.user_id+"|"+ban_user_info.first_name+" "+ban_user_info.last_name+"] забанен"+(ban_user_info.sex==1?'а':'')+" в этом чате за приглашение заблокированного участника.");
+								msg.removeChatUser(msg.user_id);
+							} else{
+								msg.send("[id"+msg.user_id+"|"+ban_user_info.first_name+" "+ban_user_info.last_name+"] получил"+(ban_user_info.sex==1?'а':'')+" предупреждение за приглашение заблокированного участника.\n\nВ данный момент он"+(ban_user_info.sex==1?'а':'')+" имеет "+bd_warn_count+"/"+chat_info.max_warns+" предупреждений.");
+							}
+							msg.removeChatUser(msg.action_mid);
+						});
+					});
+				});
+			}
+		});
 	},
 	sign:{
 		issuer: 1,
