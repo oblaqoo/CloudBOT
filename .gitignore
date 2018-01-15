@@ -63,6 +63,7 @@ config.js
 # Modules
 modules/cmd_cygan.js
 modules/cmd_say.js
+modules/flowers.js
 
 # Temp
 tmp/
