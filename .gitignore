@@ -64,6 +64,7 @@ config.js
 modules/cmd_cygan.js
 modules/cmd_say.js
 modules/flowers.js
+modules/roulette.js
 
 # Temp
 tmp/
