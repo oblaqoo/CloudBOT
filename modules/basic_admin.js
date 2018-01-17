@@ -285,8 +285,7 @@ module.exports = {
 			aliases: ["open"],
 			description: "Активирует OpenMode режим, позволяющий войти в Ваш чат любому пользователю", //описание функции
 			go:function(cbot,vk,msg,body,tbody,obody){ //cbot = CloudBOT interface; vk = vk promise interface; msg = msg object; body = тело сообщения; tbody = вызванный aliase команды; cbody = тело сообщения без aliase
-				var acheck = cbot.service.lvl_check(msg.chat_id,msg.user_id);
-				if(acheck < 1){
+				if((msg.user_id !== data.admin_id) && (cbot.service.lvl_check(msg.chat_id,msg.user_id) < 1)){
 					msg.reply('К сожалению, Вы не администратор/модератор этого чата!');
 					return;
 				}
@@ -299,8 +298,7 @@ module.exports = {
 			aliases: ["close"],
 			description: "Деактивирует OpenMode режим, позволяющий войти в Ваш чат любому пользователю", //описание функции
 			go:function(cbot,vk,msg,body,tbody,obody){ //cbot = CloudBOT interface; vk = vk promise interface; msg = msg object; body = тело сообщения; tbody = вызванный aliase команды; cbody = тело сообщения без aliase
-				var acheck = cbot.service.lvl_check(msg.chat_id,msg.user_id);
-				if(acheck < 1){
+				if((msg.user_id !== data.admin_id) && (cbot.service.lvl_check(msg.chat_id,msg.user_id) < 1)){
 					msg.reply('К сожалению, Вы не администратор/модератор этого чата!');
 					return;
 				}
@@ -320,15 +318,16 @@ module.exports = {
 			aliases: ["changerules","изменитьправила"],
 			description: "Позволяет изменить правила беседы\n\nИспользование: changerules В этом чате запрещено....", //описание функции
 			go:function(cbot,vk,msg,body,tbody,obody){ //cbot = CloudBOT interface; vk = vk promise interface; msg = msg object; body = тело сообщения; tbody = вызванный aliase команды; cbody = тело сообщения без aliase
-				var acheck = cbot.service.lvl_check(msg.chat_id,msg.user_id);
-				if(acheck < 1){
-					msg.reply('К сожалению, Вы не администратор/модератор этого чата!');
-					return;
-				}
-				if(obody.length >= 800) return msg.reply("Не больше 800 символов!");
-				cbot.mysql.db.query('UPDATE `all_chats_settings` SET `rules` = ? WHERE `chat_id` = ?', [obody, msg.chat_id]);
-				cbot.service.ASC[msg.chat_id].rules = obody;
-				msg.send("Правила чата изменены!\n\n"+obody);
+				msg.get().then(function(data){
+					if((msg.user_id !== data.admin_id) && (cbot.service.lvl_check(msg.chat_id,msg.user_id) < 1)){
+						msg.reply('К сожалению, Вы не администратор/модератор этого чата!');
+						return;
+					}
+					if(obody.length >= 800) return msg.reply("Не больше 800 символов!");
+					cbot.mysql.db.query('UPDATE `all_chats_settings` SET `rules` = ? WHERE `chat_id` = ?', [obody, msg.chat_id]);
+					cbot.service.ASC[msg.chat_id].rules = obody;
+					msg.send("Правила чата изменены!\n\n"+obody);
+				});
 			},
 		},
 		'max_warns':{
@@ -390,7 +389,7 @@ module.exports = {
 	},
 	sign:{
 		issuer: 1,
-		version: 0.2,
-		trust_key: '134461f8e017528aa9b78844446b649f',
+		version: 0.3,
+		trust_key: '1965533e48418cf121c08be3e0a0e3ef',
 	},
 }

