@@ -18,7 +18,7 @@ module.exports = {
 				let module = cbot.modules.loaded[cbot.modules.aliases[obody]],
 					dsc = module.msg[module.aliases[obody]].description;
 				if(!dsc) return msg.reply('К сожалению, разработчик модуля `'+cbot.modules.aliases[obody]+'` не добавил описание этой команды');
-				msg.reply(dsc);
+				msg.reply(obody+": "+dsc);
 			},
 		},
 	},
