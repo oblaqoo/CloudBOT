@@ -4,6 +4,7 @@ module.exports = {
 	msg:{
 		'say':{
 			aliases: ["voice","speak","say","голос","скажи","озвучь"],
+			description: "Озвучит Ваше сообщение голосом", //описание функции
 			go:function(cbot,vk,msg,body,tbody,obody){ //cbot = CloudBOT interface; vk = vk promise interface; msg = msg object; body = тело сообщения; tbody = вызванный aliase команды; cbody = тело сообщения без aliase
 				if(!cbot.config.voice_key) return msg.reply('Модуль cmd_say не настроен! Заполните поле voice_key в конфигурационном файле бота! (config.js)');
 				if(obody.length > 1000) return msg.reply('В сообщении должно быть не более 1000 символов!');

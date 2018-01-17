@@ -2,8 +2,9 @@ var request = require('request');
 var fs = require("fs");
 module.exports = {
 	msg:{
-		'info':{
+		/*'info':{
 			aliases: ["info","инфа"],
+			description: "отправит `ответ`", //описание функции
 			go:function(cbot,vk,msg,body,tbody,obody){ //cbot = CloudBOT interface; vk = vk promise interface; msg = msg object; body = тело сообщения; tbody = вызванный aliase команды; cbody = тело сообщения без aliase
 				var ASC = cbot.service.ASC[msg.chat_id];
 				var BSC = cbot.service.BSC[msg.chat_id];
@@ -29,9 +30,10 @@ module.exports = {
 					});
 				});
 			},
-		},
-		'tinfo':{
-			aliases: ["textinfo","tinfo","тинфа"],
+		},*/
+		'info':{
+			aliases: ["info","инфа","инфо"],
+			description: "Информация о текущей беседе", //описание функции
 			go:function(cbot,vk,msg,body,tbody,obody){ //cbot = CloudBOT interface; vk = vk promise interface; msg = msg object; body = тело сообщения; tbody = вызванный aliase команды; cbody = тело сообщения без aliase
 				var ASC = cbot.service.ASC[msg.chat_id];
 				var BSC = cbot.service.BSC[msg.chat_id];

@@ -2,6 +2,7 @@ module.exports = {
 	msg:{
 		'antimat':{
 			aliases: ["antimat","антимат"],
+			description: "Активирует/Деактивирует анти-мат в чате с ботом-модератором", //описание функции
 			go:function(cbot,vk,msg,body,tbody,obody){ //cbot = CloudBOT interface; vk = vk promise interface; msg = msg object; body = тело сообщения; tbody = вызванный aliase команды; cbody = тело сообщения без aliase
 				if(!cbot.service.BSC[msg.chat_id]){
 					msg.reply("Данная команда доступна только для бесед с ботом-модератором.\n\nСоздать беседу с ботом-модератором Вы можете здесь: https://bot.oblaqoo.ru/");

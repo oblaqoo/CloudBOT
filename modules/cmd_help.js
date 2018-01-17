@@ -2,6 +2,7 @@ module.exports = {
 	msg:{
 		'help':{
 			aliases: ["help","h","хелп","помощь","помоги","команды","cmds","date"],
+			description: "Список всех команд", //описание функции
 			go:function(cbot,vk,msg,body,tbody,obody){ //cbot = CloudBOT interface; vk = vk promise interface; msg = msg object; body = тело сообщения; tbody = вызванный aliase команды; cbody = тело сообщения без aliase
 				var cmd = "В данный момент [sibteambot|бот] понимает эти команды:\n\n";
 				for(var key in cbot.modules.aliases){
@@ -12,6 +13,7 @@ module.exports = {
 		},
 		'helpsa':{
 			aliases: ["helpsa"],
+			description: "Подробное описание команды", //описание функции
 			go:function(cbot,vk,msg,body,tbody,obody){ //cbot = CloudBOT interface; vk = vk promise interface; msg = msg object; body = тело сообщения; tbody = вызванный aliase команды; cbody = тело сообщения без aliase
 				let module = cbot.modules.loaded[cbot.modules.aliases[obody]],
 					dsc = module.msg[module.aliases[obody]].description;

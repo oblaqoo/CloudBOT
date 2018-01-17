@@ -2,6 +2,7 @@ module.exports = {
 	msg:{
 		ball:{
 			aliases: ["ball"],
+			description: "Answer your questions that require an answer YES/NO\n\nUsing: ball Petka fool?", //описание функции
 			go:function(cbot,vk,msg,body,tbody,obody){ //cbot = CloudBOT interface; vk = vk promise interface; msg = msg object; body = тело сообщения; tbody = вызванный aliase команды; cbody = тело сообщения без aliase
 				var cygan = [
 						'It is certain',
@@ -30,6 +31,7 @@ module.exports = {
 		},
 		ball_ru:{
 			aliases: ["шар"],
+			description: "Ответит на Ваши вопросы, требующие ответ ДА/НЕТ\n\nИспользование: шар Петька дурак?", //описание функции
 			go:function(cbot,vk,msg,body,tbody,obody){ //cbot = CloudBOT interface; vk = vk promise interface; msg = msg object; body = тело сообщения; tbody = вызванный aliase команды; cbody = тело сообщения без aliase
 				var cygan = [
 						'Бесспорно',

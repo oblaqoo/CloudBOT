@@ -2,6 +2,7 @@ module.exports = {
 	msg:{
 		'ban':{
 			aliases: ["ban","бан","блокировка","банан"],
+			description: "Заблокирует пользователя в чате с ботом-модератором", //описание функции
 			go:function(cbot,vk,msg,body,tbody,obody){ //cbot = CloudBOT interface; vk = vk promise interface; msg = msg object; body = тело сообщения; tbody = вызванный aliase команды; cbody = тело сообщения без aliase
 				if(!cbot.service.BSC[msg.chat_id]){
 					msg.reply("Данная команда доступна только для бесед с ботом-модератором.\n\nСоздать беседу с ботом-модератором Вы можете здесь: https://bot.oblaqoo.ru/");
@@ -38,6 +39,7 @@ module.exports = {
 		},
 		'unban':{
 			aliases: ["unban"],
+			description: "Разблокирует пользователя в чате с ботом-модератором", //описание функции
 			go:function(cbot,vk,msg,body,tbody,obody){ //cbot = CloudBOT interface; vk = vk promise interface; msg = msg object; body = тело сообщения; tbody = вызванный aliase команды; cbody = тело сообщения без aliase
 				if(!cbot.service.BSC[msg.chat_id]){
 					msg.reply("Данная команда доступна только для бесед с ботом-модератором.\n\nСоздать беседу с ботом-модератором Вы можете здесь: https://bot.oblaqoo.ru/");
@@ -69,6 +71,7 @@ module.exports = {
 		},
 		'warn':{
 			aliases: ["warn","варн","предупреждение","вареник","мразь"],
+			description: "Выдаст 1 предупреждение пользователю в чате с ботом-модератором\n\nПри достяжении лимита предупреждений пользователь будет забанен в чате!\n\nУстановить лимит: maxwarns 10", //описание функции
 			go:function(cbot,vk,msg,body,tbody,obody){ //cbot = CloudBOT interface; vk = vk promise interface; msg = msg object; body = тело сообщения; tbody = вызванный aliase команды; cbody = тело сообщения без aliase
 				if(!cbot.service.BSC[msg.chat_id]){
 					msg.reply("Данная команда доступна только для бесед с ботом-модератором.\n\nСоздать беседу с ботом-модератором Вы можете здесь: https://bot.oblaqoo.ru/");
@@ -119,6 +122,7 @@ module.exports = {
 		},
 		'unwarn':{
 			aliases: ["unwarn","унварн"],
+			description: "Снимает 1 предупреждение с пользователя в чате с ботом-модератором", //описание функции
 			go:function(cbot,vk,msg,body,tbody,obody){ //cbot = CloudBOT interface; vk = vk promise interface; msg = msg object; body = тело сообщения; tbody = вызванный aliase команды; cbody = тело сообщения без aliase
 				if(!cbot.service.BSC[msg.chat_id]){
 					msg.reply("Данная команда доступна только для бесед с ботом-модератором.\n\nСоздать беседу с ботом-модератором Вы можете здесь: https://bot.oblaqoo.ru/");
@@ -161,7 +165,8 @@ module.exports = {
 			},
 		},
 		'kick':{
-			aliases: ["kick","кик","выгнать","идинахуй"],
+			aliases: ["kick","кик","выгнать"],
+			description: "Выгоняет пользователя из чата с ботом-модератором", //описание функции
 			go:function(cbot,vk,msg,body,tbody,obody){ //cbot = CloudBOT interface; vk = vk promise interface; msg = msg object; body = тело сообщения; tbody = вызванный aliase команды; cbody = тело сообщения без aliase
 				if(!cbot.service.BSC[msg.chat_id]){
 					msg.reply("Данная команда доступна только для бесед с ботом-модератором.\n\nСоздать беседу с ботом-модератором Вы можете здесь: https://bot.oblaqoo.ru/");
@@ -195,7 +200,8 @@ module.exports = {
 			},
 		},
 		'admin':{
-			aliases: ["admin","makeadmin","makeadminsgreateagain!"],
+			aliases: ["admin","makeadmin"],
+			description: "Дает привилегии администратора в чате с ботом-модератором", //описание функции
 			go:function(cbot,vk,msg,body,tbody,obody){ //cbot = CloudBOT interface; vk = vk promise interface; msg = msg object; body = тело сообщения; tbody = вызванный aliase команды; cbody = тело сообщения без aliase
 				if(!cbot.service.BSC[msg.chat_id]){
 					msg.reply("Данная команда доступна только для бесед с ботом-модератором.\n\nСоздать беседу с ботом-модератором Вы можете здесь: https://bot.oblaqoo.ru/");
@@ -235,7 +241,8 @@ module.exports = {
 			},
 		},
 		'moder':{
-			aliases: ["moder","makemoder","makemodersgreateagain!"],
+			aliases: ["moder","makemoder"],
+			description: "Снимает привилегии администратора в чате с ботом-модератором", //описание функции
 			go:function(cbot,vk,msg,body,tbody,obody){ //cbot = CloudBOT interface; vk = vk promise interface; msg = msg object; body = тело сообщения; tbody = вызванный aliase команды; cbody = тело сообщения без aliase
 				if(!cbot.service.BSC[msg.chat_id]){
 					msg.reply("Данная команда доступна только для бесед с ботом-модератором.\n\nСоздать беседу с ботом-модератором Вы можете здесь: https://bot.oblaqoo.ru/");
@@ -276,6 +283,7 @@ module.exports = {
 		},
 		'open':{
 			aliases: ["open"],
+			description: "Активирует OpenMode режим, позволяющий войти в Ваш чат любому пользователю", //описание функции
 			go:function(cbot,vk,msg,body,tbody,obody){ //cbot = CloudBOT interface; vk = vk promise interface; msg = msg object; body = тело сообщения; tbody = вызванный aliase команды; cbody = тело сообщения без aliase
 				var acheck = cbot.service.lvl_check(msg.chat_id,msg.user_id);
 				if(acheck < 1){
@@ -289,6 +297,7 @@ module.exports = {
 		},
 		'close':{
 			aliases: ["close"],
+			description: "Деактивирует OpenMode режим, позволяющий войти в Ваш чат любому пользователю", //описание функции
 			go:function(cbot,vk,msg,body,tbody,obody){ //cbot = CloudBOT interface; vk = vk promise interface; msg = msg object; body = тело сообщения; tbody = вызванный aliase команды; cbody = тело сообщения без aliase
 				var acheck = cbot.service.lvl_check(msg.chat_id,msg.user_id);
 				if(acheck < 1){
@@ -302,12 +311,14 @@ module.exports = {
 		},
 		'rules':{
 			aliases: ["rules","правила"],
+			description: "Правила беседы", //описание функции
 			go:function(cbot,vk,msg,body,tbody,obody){ //cbot = CloudBOT interface; vk = vk promise interface; msg = msg object; body = тело сообщения; tbody = вызванный aliase команды; cbody = тело сообщения без aliase
 				msg.send("Правила чата:\n\n"+cbot.service.ASC[msg.chat_id].rules);
 			},
 		},
 		'changerules':{
 			aliases: ["changerules","изменитьправила"],
+			description: "Позволяет изменить правила беседы\n\nИспользование: changerules В этом чате запрещено....", //описание функции
 			go:function(cbot,vk,msg,body,tbody,obody){ //cbot = CloudBOT interface; vk = vk promise interface; msg = msg object; body = тело сообщения; tbody = вызванный aliase команды; cbody = тело сообщения без aliase
 				var acheck = cbot.service.lvl_check(msg.chat_id,msg.user_id);
 				if(acheck < 1){
@@ -322,6 +333,7 @@ module.exports = {
 		},
 		'max_warns':{
 			aliases: ["maxwarns"],
+			description: "Устанавливает максимальное количество предупреждений для 1 пользователя в чате с ботом-модератором", //описание функции
 			go:function(cbot,vk,msg,body,tbody,obody){ //cbot = CloudBOT interface; vk = vk promise interface; msg = msg object; body = тело сообщения; tbody = вызванный aliase команды; cbody = тело сообщения без aliase
 				var acheck = cbot.service.lvl_check(msg.chat_id,msg.user_id);
 				if(acheck < 1){

@@ -2,6 +2,7 @@ module.exports = {
 	msg:{
 		'who':{
 			aliases: ["who","кто"],
+			description: "кто {козел}?", //описание функции
 			go:function(cbot,vk,msg,body,tbody,obody){ //cbot = CloudBOT interface; vk = vk promise interface; msg = msg object; body = тело сообщения; tbody = вызванный aliase команды; cbody = тело сообщения без aliase
 				msg.getChatUsers({fields:'sex'}).then(function(data){
 					var usr = data[Math.floor(Math.random() * data.length)];
@@ -11,6 +12,7 @@ module.exports = {
 		},
 		'bottle':{
 			aliases: ["bottle","бутылочка"],
+			description: "Старая добрая бутылочка", //описание функции
 			go:function(cbot,vk,msg,body,tbody,obody){ //cbot = CloudBOT interface; vk = vk promise interface; msg = msg object; body = тело сообщения; tbody = вызванный aliase команды; cbody = тело сообщения без aliase
 				msg.getChatUsers({name_case:'acc',fields:'sex'}).then(function(data){
 					var usr = data[Math.floor(Math.random() * data.length)];
@@ -20,6 +22,7 @@ module.exports = {
 		},
 		'whom':{
 			aliases: ["whom","кого"],
+			description: "кого {сегодня не будет на работе}?", //описание функции
 			go:function(cbot,vk,msg,body,tbody,obody){ //cbot = CloudBOT interface; vk = vk promise interface; msg = msg object; body = тело сообщения; tbody = вызванный aliase команды; cbody = тело сообщения без aliase
 				msg.getChatUsers({name_case:'acc',fields:'sex'}).then(function(data){
 					var usr = data[Math.floor(Math.random() * data.length)];
@@ -29,6 +32,7 @@ module.exports = {
 		},
 		'when':{
 			aliases: ["when","когда"],
+			description: "когда {конец света}?", //описание функции
 			go:function(cbot,vk,msg,body,tbody,obody){ //cbot = CloudBOT interface; vk = vk promise interface; msg = msg object; body = тело сообщения; tbody = вызванный aliase команды; cbody = тело сообщения без aliase
 				var rtime = cbot.utils.rand(0,5);
 				var d = new Date((Math.floor(Date.now()/1000)+cbot.utils.rand(10000,9999999))*1000);
