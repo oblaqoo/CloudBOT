@@ -1,7 +1,7 @@
 module.exports = {
-	token: 'token', //access_token аккаунта бота
-	v: 'CloudBOT NODE v0.0.1 by oblaqoo | 07 jan 2018',
+	token: 'token', //access_token аккаунта бота; можно не заполнять, если бот запущен в сообществе
 	vnum: '0.0.1',
+	v: 'CloudBOT NODE v'+this.vnum+' by oblaqoo | 07 jan 2018',
 	bot_id: 348877376, //id аккаунта бота
 	bd_host: 'localhost', //Адрес сервера mysql
 	bd_user: 'cbot', //Пользователь mysql
@@ -29,5 +29,14 @@ module.exports = {
 	],
 	voice_key: '', //получите API-ключ SpeechKit Cloud здесь: https://developer.tech.yandex.ru/keys/
 	voice_speaker: 'zahar', //голос синтезированной речи. Можно выбрать один из следующих голосов: женские голоса: jane, oksana, alyss и omazh; мужские голоса: zahar и ermil.
+	callback:{ //конфиги для работы бота в сообществах; заполнять с помощью ВК: Ваше сообщество -> Управление сообществом -> Работа с API -> Callback API
+		group: false, //бот запущен в сообществе? true - да / false - нет
+		port: 80, //порт, нужен для проксирования, например, через nginx
+		return_key: 'gjzx53S', //строка, которую должен вернуть сервер
+		secret_key: 'secretkey', //секретный ключ
+		domain: 'site.ru', //домен, ведущий на сервер с ботом
+		token: 'token', //access_token сообщества бота; Создать: Ваше сообщество -> Управление сообществом -> Работа с API -> Ключи доступа -> Создзать ключ -> Выставьте все галочки -> Создать -> Подтвердите действие -> Готово
+		//Адрес сервера будет показан при запуске бота
+	},
 	dev_mode: false,
 };

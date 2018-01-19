@@ -1,20 +1,20 @@
 var chalk = require('chalk');
 try {
     var config = require('./config.js');
-    // do stuff
 } catch (ex) {
 	console.log(chalk.cyan('[CONFIG]')+chalk.redBright(' ERR!')+chalk.yellow(' config.js was not found'));
 	console.log(chalk.cyan('[CONFIG]')+chalk.yellow(' load config_default.js'));
     var config = require('./config_default.js');
 }
 var fs = require("fs");
-var VK = require("VK-Promise"),
-    vk = new VK(config.token);
+var VK = require("VK-Promise");
 const mysql = require('mysql');
 var md5 = require("nodejs-md5");
 var request = require('request');
 var events = require('events');
+var http = require("http");
 var RuCaptcha = require('./rucaptcha.js');
+const unhandledRejection = require("unhandled-rejection");
 global.cbot = {
 	config: config,
 	service:{
@@ -234,11 +234,27 @@ var cb = new events.EventEmitter();
 //----------init-----------------
 cbot.mysql.connect();
 cbot.modules.load_config();
-setTimeout(function(){vk.longpoll.start();console.log(chalk.cyan('[LongPool]')+chalk.green(' Connected!'));}, 4000);
+if(config.callback.group){
+	var vk = new VK(config.callback.token);
+	var callback = vk.init_callback_api(config.callback.return_key, config.callback.secret_key);
+	console.log(chalk.yellow('[CallBack SERVER] ')+'https://'+config.callback.domain+'/vk_callback_api');
+	http.createServer(function(req, res){
+		if(req.url == "/vk_callback_api")
+			return callback(req, res);
+		res.end("Error 404");
+	}).listen(config.callback.port);
+	vk.init_execute_cart(50);
+} else{
+	var vk = new VK(config.token);
+	setTimeout(function(){vk.longpoll.start();console.log(chalk.cyan('[LongPool]')+chalk.green(' Connected!'));}, 2000);
+}
 var captcha = new RuCaptcha({
 	apiKey: config.captcha.apiKey,
 	tmpDir: config.captcha.dir,
 	checkDelay: config.captcha.delay,
+});
+var rejectionEmitter = unhandledRejection({
+    timeout: 20
 });
 //-------------------------------
 vk.on("message",function(event, msg){
@@ -323,6 +339,7 @@ vk.on("message",function(event, msg){
 				break;
 		}
 	}
+	if(config.callback.group) event.ok();
 });
 vk.on("captcha",function(event, data){
 	captcha.solve(data.captcha_img, function(err, answer){
@@ -332,3 +349,9 @@ vk.on("captcha",function(event, data){
 			data.submit(answer);
 	});
 });
+rejectionEmitter.on("unhandledRejection", (error, promise) => {
+    console.log(chalk.redBright('[ERROR] '), error);
+});
+rejectionEmitter.on("rejectionHandled", (error, promise) => {
+    console.log(chalk.redBright('[ERROR] '), error);
+})

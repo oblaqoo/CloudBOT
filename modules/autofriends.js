@@ -14,6 +14,7 @@ var mdl = {
 		});
 	},
 	load:function(cbot,vk,cb){ //cbot = CloudBOT interface; vk = vk promise interface; msg = msg object; body = тело сообщения
+		if(cbot.config.callback.group) return;
 		this.add_all(vk);
 		setInterval(function(){
 			mdl.add_all(vk);

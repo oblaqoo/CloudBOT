@@ -7,6 +7,7 @@ var mdl = {
 	},
 	load: function(cbot, vk){
 		cbot.mysql.db.query('CREATE TABLE IF NOT EXISTS `cbot_autostatus` (`id` INT(11) NOT NULL AUTO_INCREMENT,`cpu` SMALLINT(3) NOT NULL,`msgs` INT(11) NOT NULL,`msgs_chat` INT(11) NOT NULL,`msgs_prv` INT(11) NOT NULL,`time` INT(11) NOT NULL,PRIMARY KEY(`id`))');
+		if(cbot.config.callback.group) return;
 		var d = new Date();
 		var loads = os.loadavg();
 		var percent = Math.round((loads[0]<1?loads[0]*100:99));
