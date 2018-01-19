@@ -336,7 +336,7 @@ vk.on("message",function(event, msg){
 				break;
 			default:
 				var mdl = cbot.modules.loaded[cbot.modules.aliases[sms[0]]];
-				if((mdl.msg) && (mdl.msg[mdl.aliases[sms[0]]]))mdl.msg[mdl.aliases[sms[0]]].go((cbot.utils.array_find(cbot.modules.trusted,cbot.modules.aliases[sms[0]])+1?cbot:cbot.sandbox),vk,msg,msg.body,sms[0],msg.body.replace(msg.body.split(" ")[0]+" ",""));
+				if((mdl) && (mdl.msg[mdl.aliases[sms[0]]]))mdl.msg[mdl.aliases[sms[0]]].go((cbot.utils.array_find(cbot.modules.trusted,cbot.modules.aliases[sms[0]])+1?cbot:cbot.sandbox),vk,msg,msg.body,sms[0],msg.body.replace(msg.body.split(" ")[0]+" ",""));
 				break;
 		}
 	}
