@@ -26,6 +26,7 @@ module.exports = {
 		"cmd_info",
 		"cmd_wh",
 		"cmd_help",
+		"pi",
 	],
 	voice_key: '', //получите API-ключ SpeechKit Cloud здесь: https://developer.tech.yandex.ru/keys/
 	voice_speaker: 'zahar', //голос синтезированной речи. Можно выбрать один из следующих голосов: женские голоса: jane, oksana, alyss и omazh; мужские голоса: zahar и ermil.
