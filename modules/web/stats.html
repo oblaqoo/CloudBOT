@@ -1,0 +1,39 @@
+<title>Статистика | CloudBOT</title>
+<meta name="theme-color" content="#1d2126">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
+<link rel="stylesheet" href="/style.css">
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.2/socket.io.js"></script>
+<div id="menu">
+	{{#each data.menu}}
+		<a href="{{path}}" class="menu_button anim">{{name}}</a>
+	{{/each}}
+</div>
+<div id="content">
+	<div class="block" data-tilt><div style="position: absolute;top: 50%;transform: translateY(-50%); margin: 10px;"><span id="uptime" class="large">0</span><br/><br/>секунд длится текущая сессия бота.<br/>Сессия - время между запуском CloudBOT и его закрытием (спасибо, Кэп)</div></div>
+	<div class="block" data-tilt><div style="position: absolute;top: 50%;transform: translateY(-50%); margin: 10px;"><span id="msg_count" class="large">{{data.cbot.service.counters.messages.all}}</span><br/><br/>сообщений CloudBOT обработал за текущую сессию.<br/>Сессия - вр...НЕТ! Кэп, остановись. ДА, ОНИ ПОНЯЛИ, КЭП! Спасибо.</div></div>
+	<div class="block" data-tilt><div style="position: absolute;top: 50%;transform: translateY(-50%); margin: 10px;"><span id="pi_count" class="large">0</span><br/><br/>ответов содержится в базе псевдоинтеллекта CloudPI. Эта база еженедельно пополняется Вашими ответами!</div></div>
+	<div class="block" data-tilt><div style="position: absolute;top: 50%;transform: translateY(-50%); margin: 10px;"><span id="pi_learn_count" class="large">0</span><br/><br/>сообщений в данный момент находится на модерации для добавления в базу CloudPI</div></div>
+	<div class="block" data-tilt><div style="position: absolute;top: 50%;transform: translateY(-50%); margin: 10px;"><span class="large">{{data.config.vnum}}</span><br/><br/>текущая версия CloudBOT. Рекомендуем ежедневно проверять обновления, дабы быстро получать все нововведения!</div></div>
+</div>
+<div id="cprt">© 2018 <a href="https://oblaqoo.ru/" target="_blank">oblaqoo</a></div>
+
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<script src="tilt.js"></script>
+<script>
+var socket = io('/');
+socket.on('start_change', function(data){
+	$('#uptime').text(Math.round(+new Date()/1000)-data.starttime);
+});
+socket.on('msg_change', function(data){
+	$('#msg_count').text(data.count);
+});
+
+$.getJSON('https://api.oblaqoo.ru/bot.getstats', function(data){
+	$('#pi_count').text(data.pi.all);
+	$('#pi_learn_count').text(data.pi.moderation);
+});
+$('.menu_button[href="{{path}}"]').addClass('active');
+$('#uptime').text(Math.round(+new Date()/1000)-{{data.starttime}});
+setInterval(function(){$('#uptime').text(Number($('#uptime').text())+1);}, 1000);
+</script>

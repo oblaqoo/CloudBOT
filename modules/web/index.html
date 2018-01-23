@@ -1,0 +1,18 @@
+<title>Мэйк бот грэйт эгэйн! | CloudBOT</title>
+<meta name="theme-color" content="#1d2126">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
+<link rel="stylesheet" href="/style.css">
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<div id="menu">
+	{{#each data.menu}}
+		<a href="{{path}}" class="menu_button anim">{{name}}</a>
+	{{/each}}
+</div>
+<div id="mblock"><img id="csc" src="https://oblaqoo.ru/src/CloudBOT/images/logo.png"><br />CloudBOT</div>
+<div id="cprt_mdl">v{{data.config.vnum}}</div>
+<div id="cprt">© 2018 <a href="https://oblaqoo.ru/" target="_blank">oblaqoo</a></div>
+
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<script>
+$('.menu_button[href="{{path}}"]').addClass('active');
+</script>

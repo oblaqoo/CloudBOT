@@ -1,0 +1,121 @@
+body{
+	background: #1d2126;
+	display: flex;
+	flex-wrap: wrap;
+    align-items: center;
+    align-content: center; 
+    justify-content: center; 
+}
+a{
+	text-decoration: none;
+	color: #2176ce;
+	cursor: pointer;
+	transition: all 0.1s ease 0s;
+	-webkit-transition: all 0.1s ease 0s;
+	-ms-transition: all 0.1s ease 0s;
+	-moz-transition: all 0.1s ease 0s;
+	-o-transition: all 0.1s ease 0s;
+}
+a:hover{
+	color: #658AB0;
+}
+#mblock{
+	color: #658AB0;
+	text-align: center;
+	font-size: 21px;
+}
+#csc{
+	margin: 10px;
+}
+#cprt_mdl{
+	position: fixed;
+	bottom: 8px;
+	left: 4px;
+	color: #658AB0;
+}
+#cprt{
+	position: fixed;
+	bottom: 8px;
+	right: 4px;
+	color: #658AB0;
+}
+#menu{
+	position: absolute;
+	top: 50px;
+	width: 80%;
+	text-align: center;
+}
+#content{
+	margin-top: 150px;
+	width: 100%;
+	display: flex;
+	flex-wrap: wrap;
+    align-items: center;
+    align-content: center; 
+    justify-content: center; 
+    overflow: hidden;  
+}
+.anim{
+	transition: all 0.4s ease 0s;
+	-webkit-transition: all 0.4s ease 0s;
+	-ms-transition: all 0.4s ease 0s;
+	-moz-transition: all 0.4s ease 0s;
+	-o-transition: all 0.4s ease 0s;
+}
+.menu_button{
+	padding: 10px;
+	color: #658AB0;
+	border-radius: 4px;
+}
+.menu_button:hover{
+	background: #658AB0;
+	color: #FFF;
+}
+.menu_button.active{
+	border: 1px solid #658AB0;
+}
+.large {
+	font-size: 6rem;
+}
+.block{
+	position: relative;
+	width: 30%;
+	height: 300px;
+	background: #141619;
+	display: inline-block;
+	text-align: center;
+	vertical-align: center;
+	margin: 10px;
+	font-size: 15px;
+	cursor: pointer;
+	user-select: none;
+	-ms-user-select: none;
+	-moz-user-select: none;
+	-khtml-user-select: none;
+	-webkit-user-select: none;
+	color: #d8d8d8;
+}
+@media (max-width: 600px){ /*mobile*/
+	.block{
+		width: 90%;
+		margin: 10px 5%;
+	}
+}
+@media (min-width: 601px) and (max-width: 992px){ /*tablets*/
+	.block{
+		width: 60%;
+		margin: 10px 5%;
+	}
+}
+@media (min-width: 993px) and (max-width: 1200px){ /*desktop*/
+	.block{
+		width: 30%;
+		margin: 10px 5%;
+	}
+}
+@media (min-width: 2001px){ /*large desktop*/
+	.block{
+		width: 400px;
+		margin: 10px 5%;
+	}
+}
