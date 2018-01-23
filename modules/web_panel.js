@@ -2,7 +2,6 @@ const app = require('express')(),
 	handlebars = require('handlebars'),
 	fs = require('fs'),
 	url = require('url'),
-	mime = require('mime'),
 	server = require('http').Server(app),
 	io = require('socket.io')(server);
 module.exports = {

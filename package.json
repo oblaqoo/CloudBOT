@@ -21,7 +21,6 @@
     "fs": "0.0.1-security",
     "handlebars": "^4.0.11",
     "http": "0.0.0",
-    "mime": "^2.2.0",
     "mkdirp": "^0.5.1",
     "mysql": "^2.15.0",
     "nodejs-md5": "^1.0.2",
