@@ -20,7 +20,7 @@ module.exports = {
 						return;
 					}
 					ban_check = cbot.service.lvl_check(msg.chat_id,ban_uid);
-					if((ban_check != 0) && (acheck != 2)){
+					if((ban_check != 0) && (acheck < 2)){
 						msg.reply("К сожалению, Вы не можете заблокировать "+(ban_check == 1 ? 'модератора' : 'администратора')+"!");
 						return;
 					}
@@ -89,7 +89,7 @@ module.exports = {
 						return;
 					}
 					ban_check = cbot.service.lvl_check(msg.chat_id,ban_uid);
-					if((ban_check != 0) && (acheck != 2)){
+					if((ban_check != 0) && (acheck < 2)){
 						msg.reply("К сожалению, Вы не можете выдать предупреждение "+(ban_check == 1 ? 'модератору' : 'администратору')+"!");
 						return;
 					}
@@ -184,7 +184,7 @@ module.exports = {
 						return;
 					}
 					ban_check = cbot.service.lvl_check(msg.chat_id,ban_uid);
-					if((ban_check != 0) && (acheck != 2)){
+					if((ban_check != 0) && (acheck < 2)){
 						msg.reply("К сожалению, Вы не можете выгнать "+(ban_check == 1 ? 'модератора' : 'администратора')+"!");
 						return;
 					}
