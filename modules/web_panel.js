@@ -73,6 +73,7 @@ module.exports = {
 				socket.emit('captcha_new', { id: cid, src: cbot.captcha.saved[cid].src });
 			});
 			socket.on('cans', function(cpt) {
+				if(!cbot.captcha.saved[cpt.id]) return;
 				cbot.captcha.saved[cpt.id].answer = cpt.ans
 				cb.emit("captcha:"+cpt.id);
 			});
