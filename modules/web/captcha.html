@@ -23,10 +23,16 @@ var c = 0
 var socket = io('/');
 socket.on('captcha_new', function(data){
 	if(c == 0){
-		$('#captcha').html('<img src="'+data.src+'"><br/><br/><input type="text" size="10" id="c_s"><br/><a class="menu_button anim" onclick="csend('+data.id+');">Отправить</a>');
+		$('#captcha').html('<img src="'+data.src+'"><br/><br/><input type="text" size="10" cid="'+data.id+'" id="c_s" onkeypress="return runScript(event)" /><br/><a class="menu_button anim" onclick="csend('+data.id+');">Отправить</a>');
 		c = 1;
 	}
 });
+function runScript(e){
+    if(e.keyCode == 13){
+        csend($("#c_s").attr('cid'));
+        return false;
+    }
+}
 function csend(cid){
 	socket.emit('cans', { id: cid, ans: $('#c_s').val() });
 	$('#captcha').text('На данный момент полученных капч не имеется, спасибо ;)');
