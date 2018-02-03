@@ -24,6 +24,7 @@ var socket = io('/');
 socket.on('captcha_new', function(data){
 	if(c == 0){
 		$('#captcha').html('<img src="'+data.src+'"><br/><br/><input type="text" size="10" cid="'+data.id+'" id="c_s" onkeypress="return runScript(event)" /><br/><a class="menu_button anim" onclick="csend('+data.id+');">Отправить</a>');
+		$('#c_s').focus();
 		c = 1;
 	}
 });
