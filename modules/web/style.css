@@ -19,10 +19,20 @@ a{
 a:hover{
 	color: #658AB0;
 }
+input[type=text]{
+	border: 1px solid #658AB0;
+	border-radius: 4px;
+	background: #1d2126;
+	color: #FFF;
+	height: 40px;
+	font-size: 18px;
+	padding: 5px 10px;
+	text-align: center;
+}
 #mblock{
 	color: #658AB0;
 	text-align: center;
-	font-size: 21px;
+	font-size: 18px;
 }
 #csc{
 	margin: 10px;
@@ -46,6 +56,7 @@ a:hover{
 	text-align: center;
 }
 #content{
+	color: #658ab0;
 	margin-top: 150px;
 	width: 100%;
 	display: flex;
@@ -55,6 +66,10 @@ a:hover{
     justify-content: center; 
     overflow: hidden;  
 }
+#captcha{
+	margin: 0 auto;
+	text-align: center;
+}
 .anim{
 	transition: all 0.4s ease 0s;
 	-webkit-transition: all 0.4s ease 0s;
@@ -63,7 +78,9 @@ a:hover{
 	-o-transition: all 0.4s ease 0s;
 }
 .menu_button{
+	display: inline-block;
 	padding: 10px;
+	margin: 10px 0;
 	color: #658AB0;
 	border-radius: 4px;
 }
@@ -84,7 +101,6 @@ a:hover{
 	background: #141619;
 	display: inline-block;
 	text-align: center;
-	vertical-align: center;
 	margin: 10px;
 	font-size: 15px;
 	cursor: pointer;

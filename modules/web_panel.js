@@ -18,6 +18,10 @@ module.exports = {
 				name: 'Статистика',
 				path: '/stats.html',
 			},
+			{
+				name: 'Капча',
+				path: '/captcha.html',
+			},
 		],
 	},
 	e404:function(res){
@@ -64,6 +68,13 @@ module.exports = {
 			socket.emit('msg_change', { count: cbot.service.counters.messages.all });
 			cb.on("message",function(msg){
 				socket.emit('msg_change', { count: cbot.service.counters.messages.all });
+			});
+			cb.on("captcha",function(cid){
+				socket.emit('captcha_new', { id: cid, src: cbot.captcha.saved[cid].src });
+			});
+			socket.on('cans', function(cpt) {
+				cbot.captcha.saved[cpt.id].answer = cpt.ans
+				cb.emit("captcha:"+cpt.id);
 			});
 		})
 	},

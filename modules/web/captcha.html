@@ -1,0 +1,36 @@
+<title>Статистика | CloudBOT</title>
+<meta name="theme-color" content="#1d2126">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
+<link rel="stylesheet" href="/style.css">
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.2/socket.io.js"></script>
+<div id="menu">
+	{{#each data.menu}}
+		<a href="{{path}}" class="menu_button anim">{{name}}</a>
+	{{/each}}
+</div>
+<div id="content">
+	<h2>В жизни каждого порядочного бота случаются проблемы...</h2><br/><br/>
+	<h4 style="text-align: center;">Так случилось и с CloudBOT. К сожалению, кошелёк разработчика не настолько полон, чтобы оплачивать каждый день автоматическое распознавание капчи.<br/>Пожалуйста, введите код с картинки в поле ниже: </h4>
+	<div class="block" data-tilt style="display: flex;justify-content: center;align-items: center; padding: 10px;"><div id="captcha">На данный момент полученных капч не имеется, спасибо ;)</div></div>
+</div>
+<div id="cprt">© 2018 <a href="https://oblaqoo.ru/" target="_blank">oblaqoo</a></div>
+
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<script src="tilt.js"></script>
+<script>
+var c = 0
+var socket = io('/');
+socket.on('captcha_new', function(data){
+	if(c == 0){
+		$('#captcha').html('<img src="'+data.src+'"><br/><br/><input type="text" size="10" id="c_s"><br/><a class="menu_button anim" onclick="csend('+data.id+');">Отправить</a>');
+		c = 1;
+	}
+});
+function csend(cid){
+	socket.emit('cans', { id: cid, ans: $('#c_s').val() });
+	$('#captcha').text('На данный момент полученных капч не имеется, спасибо ;)');
+	c = 0;
+}
+$('.menu_button[href="{{path}}"]').addClass('active');
+</script>

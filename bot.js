@@ -17,6 +17,9 @@ var RuCaptcha = require('./rucaptcha.js');
 const unhandledRejection = require("unhandled-rejection");
 global.cbot = {
 	config: config,
+	captcha:{
+		saved:[],
+	},
 	service:{
 		ASC:{},
 		BSC:{},
@@ -31,6 +34,7 @@ global.cbot = {
 					return cbot.service.counters.messages.all - cbot.service.counters.messages.chats;
 				},
 			},
+			captcha: 0, //fix of flooding captcha
 			start: Math.round(+new Date()/1000),
 		},
 		is_admin:function(chat_id, user_id){
@@ -310,7 +314,7 @@ vk.on("message",function(event, msg){
 			var ASC = cbot.service.ASC[msg.chat_id];
 			if(!ASC){
 				cbot.mysql.db.query('SELECT * FROM `all_chats_settings` WHERE ?', {chat_id: msg.chat_id}, function(err,result){
-					if(!result[0]){
+					if(!result || !result[0]){
 						cbot.mysql.db.query('INSERT INTO `all_chats_settings` (`chat_id`,`freemode`,`voice`) VALUES ?', [msg.chat_id, 0, 1]);
 						cbot.service.ASC[msg.chat_id] = {chat_id: msg.chat_id, freemode: 0, voice: 1, open: 0, rules: "В этом чате не установлены правила. Для того, чтобы установить правила отправьте !changerules и желаемые правила чата."};
 					} else{
@@ -322,7 +326,7 @@ vk.on("message",function(event, msg){
 			if(!cbot.utils.array_find(cbot.service.BSC_cache, msg.chat_id)+1){
 				cbot.service.BSC_cache.push(msg.chat_id);
 				cbot.mysql.db.query('SELECT * FROM `chat_settings` WHERE ?', {chat_id: msg.chat_id}, function(err,result){
-					if(!result[0]) return;
+					if(!result || !result[0]) return;
 					cbot.service.BSC[msg.chat_id] = result[0];
 				});
 			}
@@ -342,12 +346,27 @@ vk.on("message",function(event, msg){
 	}
 });
 vk.on("captcha",function(event, data){
-	captcha.solve(data.captcha_img, function(err, answer){
-		if(err)
-			console.log(chalk.cyan('[CAPCHA] ')+chalk.redBright('ERR! '),err);
-		else
-			data.submit(answer);
-	});
+	if(cbot.service.counters.captcha <= 3)
+		captcha.solve(data.captcha_img, function(err, answer){
+			cbot.service.counters.captcha++;
+			if(err)
+				console.log(chalk.cyan('[CAPCHA] ')+chalk.redBright('ERR! '),err);
+			else
+				data.submit(answer);
+		});
+	else
+		if(cbot.modules.loaded["web_panel"]){
+			let cid = cbot.captcha.saved.length;
+			cbot.captcha.saved[cid] = {src: data.captcha_img, answer: null};
+			console.log(cid);
+			cb.emit('captcha', cid);
+			cb.on("captcha:"+cid, function(){
+				if(cbot.captcha.saved[cid] && cbot.captcha.saved[cid].answer){
+					data.submit(cbot.captcha.saved[cid].answer);
+					return cbot.captcha.saved.splice(cid-1, 1);;
+				}
+			});
+		} else console.log(chalk.cyan('[CAPCHA] ')+chalk.redBright('ERR! ')+"Resource web_panel was not loaded!");
 });
 rejectionEmitter.on("unhandledRejection", (error, promise) => {
     console.log(chalk.redBright('[ERROR] '), error);
@@ -355,3 +374,6 @@ rejectionEmitter.on("unhandledRejection", (error, promise) => {
 rejectionEmitter.on("rejectionHandled", (error, promise) => {
     console.log(chalk.redBright('[ERROR] '), error);
 })
+
+//captcha fix
+setInterval(function(){cbot.service.counters.captcha=0}, 300000);
