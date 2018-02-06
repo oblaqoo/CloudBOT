@@ -95,7 +95,7 @@ module.exports = {
 					}
 					chat_info = cbot.service.BSC[msg.chat_id];
 					cbot.mysql.db.query('SELECT * FROM `warns` WHERE chat_id = ? AND user_id = ?', [msg.chat_id,ban_uid], function(err,result){
-						if(!result[0]){
+						if(!result || !result[0]){
 							var dd = {user_id: ban_uid, chat_id: msg.chat_id, count: 1};
 							cbot.mysql.db.query('INSERT INTO `warns` SET ?', dd);
 							var bd_warn_count = 1;
@@ -141,7 +141,7 @@ module.exports = {
 					}
 					chat_info = cbot.service.BSC[msg.chat_id];
 					cbot.mysql.db.query('SELECT * FROM `warns` WHERE chat_id = ? AND user_id = ?', [msg.chat_id,ban_uid], function(err,result){
-						if(!result[0]){
+						if(!result || !result[0]){
 							msg.reply("У этого пользователя не имеется предупреждений!");
 						} else{
 							var bd_warn_count = result[0].count - 1;
@@ -219,7 +219,7 @@ module.exports = {
 						return;
 					}
 					cbot.mysql.db.query('SELECT * FROM `chat_privilege` WHERE chat_id = ? AND user_id = ?', [msg.chat_id,ban_uid], function(err,result){
-						if(!result[0]){
+						if(!result || !result[0]){
 							cbot.mysql.db.query('INSERT INTO `chat_privilege` SET ?', {user_id: ban_uid, chat_id: msg.chat_id, lvl: 2});
 							var bd_warn_count = 1;
 						} else if(result[0].lvl==2){
@@ -260,7 +260,7 @@ module.exports = {
 						return;
 					}
 					cbot.mysql.db.query('SELECT * FROM `chat_privilege` WHERE chat_id = ? AND user_id = ?', [msg.chat_id,ban_uid], function(err,result){
-						if(!result[0]){
+						if(!result || !result[0]){
 							cbot.mysql.db.query('INSERT INTO `chat_privilege` SET ?', {user_id: ban_uid, chat_id: msg.chat_id, lvl: 1});
 							var bd_warn_count = 1;
 						} else if(result[0].lvl==1){
@@ -353,14 +353,14 @@ module.exports = {
 		cb.on("mwa",function(msg){
 			if((msg.action) && ((msg.action == 'chat_invite_user') || (msg.action == 'chat_invite_user_by_link'))){
 				cbot.mysql.db.query('SELECT * FROM `ban` WHERE chat_id = ? AND user_id = ?', [msg.chat_id,msg.action_mid], function(err,result){
-					if(!result[0]) return;
+					if(!result || !result[0]) return;
 					if(msg.action == 'chat_invite_user_by_link'){
 						msg.send('This user has been banned!');
 						msg.removeChatUser(msg.action_mid);
 					}
 					chat_info = cbot.service.BSC[msg.chat_id];
 					cbot.mysql.db.query('SELECT * FROM `warns` WHERE chat_id = ? AND user_id = ?', [msg.chat_id,msg.user_id], function(err,result){
-						if(!result[0]){
+						if(!result || !result[0]){
 							var dd = {user_id: msg.user_id, chat_id: msg.chat_id, count: 1};
 							cbot.mysql.db.query('INSERT INTO `warns` SET ?', dd);
 							var bd_warn_count = 1;

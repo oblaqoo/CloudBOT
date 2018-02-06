@@ -32,7 +32,7 @@ module.exports = {
 					if((BSC.antimat) && (msg.body.match(/(^хуй|пизд|^бля|трах|ебать|ебал|хуила|балять|уебище|уёбище|пидор|pidor|пидр|fuck|blyat|shit|^huy|hooila|pizda)/iu))){
 						chat_info = BSC;
 						cbot.mysql.db.query('SELECT * FROM `warns` WHERE chat_id = ? AND user_id = ?', [msg.chat_id,msg.user_id], function(err,result){
-							if(!result[0]){
+							if(!result || !result[0]){
 								cbot.mysql.db.query('INSERT INTO `warns` SET ?', {user_id: msg.user_id, chat_id: msg.chat_id, count: 1});
 								var bd_warn_count = 1;
 							} else{

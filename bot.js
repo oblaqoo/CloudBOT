@@ -124,7 +124,7 @@ global.cbot = {
 			cbot.mysql.db.query("INSERT IGNORE INTO `chat_settings` (`id`, `chat_id`, `max_warns`, `antimat`, `time`, `admin`) VALUES ('1', '0', '0', '0', '0', '0')");
 			cbot.mysql.db.query('SELECT * FROM `chat_privilege`', function(err,result){ //загрузка модеров и админов
 				if(err) return console.log(chalk.cyan('[MYSQL]')+chalk.redBright(' Failed to load privileges!'), err);
-				if(!result[0]) return;
+				if(!result || !result[0]) return;
 				for(var i = 0; i < result.length; i++){
 					(cbot.service[(result[i].lvl==2?'admins':'moders')][result[i].chat_id]?cbot.service[(result[i].lvl==2?'admins':'moders')][result[i].chat_id].push(result[i].user_id):cbot.service[(result[i].lvl==2?'admins':'moders')][result[i].chat_id]=[result[i].user_id]);
 				}
@@ -132,7 +132,7 @@ global.cbot = {
 			});
 			cbot.mysql.db.query('SELECT * FROM `chat_settings`', function(err,result){ //загрузка настроек чатов
 				if(err) return console.log(chalk.cyan('[MYSQL]')+chalk.redBright(' Failed to load chats settings!'), err);
-				if(!result[0]) return;
+				if(!result || !result[0]) return;
 				for(var i = 0; i < result.length; i++){
 					cbot.service.BSC[result[i].chat_id] = result[i];
 					cbot.service.BSC_cache.push(result[i].chat_id);
@@ -141,7 +141,7 @@ global.cbot = {
 			});
 			cbot.mysql.db.query('SELECT * FROM `all_chats_settings`', function(err,result){ //загрузка настроек чатов
 				if(err) return console.log(chalk.cyan('[MYSQL]')+chalk.redBright(' Failed to load allchats settings!'), err);
-				if(!result[0]) return;
+				if(!result || !result[0]) return;
 				for(var i = 0; i < result.length; i++){
 					cbot.service.ASC[result[i].chat_id] = result[i];
 				}

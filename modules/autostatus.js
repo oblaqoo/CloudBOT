@@ -12,7 +12,7 @@ var mdl = {
 		var loads = os.loadavg();
 		var percent = Math.round((loads[0]<1?loads[0]*100:99));
 		cbot.mysql.db.query('SELECT * FROM `cbot_autostatus` ORDER BY `id` DESC LIMIT 1', function(err,result){
-			if(!result[0])
+			if(!result || !result[0])
 				console.log('[AUTOSTATUS] Failed to load counters!');
 			else{
 				mdl.counters.msg = result[0].msgs;
