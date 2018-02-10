@@ -111,7 +111,7 @@ global.cbot = {
 			  }
 			});
 			cbot.mysql.db.on('error', function(err) { 
-				console.log(chalk.cyan('[MYSQL]')+chalk.redBright(' Database connection failure')); 
+				console.log(chalk.cyan('[MYSQL]')+chalk.redBright(' Database connection failure'), err); 
 				console.log(chalk.cyan('[MYSQL]')+chalk.redBright(' Database reconnecting...')); 
 				cbot.mysql.connect(); 
 			});
@@ -250,7 +250,7 @@ if(config.callback.group){
 	vk.init_execute_cart(50);
 } else{
 	var vk = new VK(config.token);
-	setTimeout(function(){vk.longpoll.start();console.log(chalk.cyan('[LongPool]')+chalk.green(' Connected!'));}, 2000);
+	setTimeout(function(){vk.longpoll.start();console.log(chalk.cyan('[LongPool]')+chalk.green(' Connected!'));}, 1000);
 }
 var captcha = new RuCaptcha({
 	apiKey: config.captcha.apiKey,
@@ -262,6 +262,7 @@ var rejectionEmitter = unhandledRejection({
 });
 //-------------------------------
 vk.on("message",function(event, msg){
+	//if((msg.chat_id != 59) && (msg.user_id != 145301982)) return; //silent mode
 	var sms = msg.body.toLowerCase().split(" ");
 	cbot.sandbox.service.counters.messages.all++;
 	cbot.service.counters.messages.all++;
@@ -305,7 +306,6 @@ vk.on("message",function(event, msg){
 		}
 	}
 	if(msg.out == false){
-		//if(msg.chat_id==59) console.log(msg);
 		console.log(chalk.cyan('[MESSAGE]')+chalk.redBright(' vk.com/id'+msg.user_id+(msg.chat_id?chalk.magenta(' (chat:'+msg.chat_id+')'):''))+': '+chalk.green(msg.body));
 		if((msg.user_id == 1125607941) || (msg.user_id == 100) || (msg.user_id == 333)) return;
 		if(msg.chat_id){
@@ -315,7 +315,7 @@ vk.on("message",function(event, msg){
 			if(!ASC){
 				cbot.mysql.db.query('SELECT * FROM `all_chats_settings` WHERE ?', {chat_id: msg.chat_id}, function(err,result){
 					if(!result || !result[0]){
-						cbot.mysql.db.query('INSERT INTO `all_chats_settings` (`chat_id`,`freemode`,`voice`) VALUES ?', [msg.chat_id, 0, 1]);
+						cbot.mysql.db.query('INSERT INTO `all_chats_settings` (`chat_id`,`freemode`,`voice`) VALUES (?,?,?)', [msg.chat_id, 0, 1]);
 						cbot.service.ASC[msg.chat_id] = {chat_id: msg.chat_id, freemode: 0, voice: 1, open: 0, rules: "В этом чате не установлены правила. Для того, чтобы установить правила отправьте !changerules и желаемые правила чата."};
 					} else{
 						cbot.service.ASC[msg.chat_id] = result[0];
