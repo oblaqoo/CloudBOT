@@ -156,7 +156,7 @@ var ths = {
 	sign:{
 		issuer: 1,
 		version: 0.1,
-		trust_key: '5f22626b406e1af0a2e2c4b1d5ef11fb',
+		trust_key: 'b33a5b1a774990834b484332b37b7487',
 	},
 };
 
