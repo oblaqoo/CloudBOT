@@ -18,7 +18,7 @@ var ths = {
 	msg:{
 		'top':{
 			aliases: ["top","топ"],
-			description: "Статистика диалога", //описание функции
+			description: "Статистика диалога:\n\ntop - общая статистика диалога\ntop users - самые активные участники беседы\ntop days - самые активные дни", //описание функции
 			go:function(cbot,vk,msg,body,tbody,obody){ //cbot = CloudBOT interface; vk = vk promise interface; msg = msg object; body = тело сообщения; tbody = вызванный aliase команды; cbody = тело сообщения без aliase
 				var mgs = msg.send('Идёт загрузка сообщений...'),
 					count = {words:0,stickers:0,attachments: 0,photos: 0,videos: 0,audios: 0,docs: 0, walls: 0,wall_replys: 0,maps: 0,forwarded: 0,censored: 0,welcomes: 0,comings: 0,abuses: 0},
@@ -56,7 +56,7 @@ var ths = {
 									sortable.sort(function(a, b){
 										return b[1] - a[1];
 									});
-									for(var i = 0; i < 30; i++){
+									for(var i = 0; i < sortable.length; i++){
 										if(!sortable[i]) break;
 										uservk+=sortable[i][0]+",";
 									}
@@ -68,13 +68,13 @@ var ths = {
 											users[u.id] = u.first_name+' '+u.last_name;
 										}
 										if(sortable[0])
-											for(var i = 0; i < 30; i++){
+											for(var i = 0; i < sortable.length; i++){
 												if(!sortable[i]) break;
 												statusers+="[id"+sortable[i][0]+"|"+users[sortable[i][0]]+"]: "+sortable[i][1]+" сообщений\n";
 											}
 										else
 											statusers = "Соррри, это диалог с нулевой активностью :(";
-										msg.send("Топ 30 пользователей:\n\n"+statusers);
+										msg.send("Топ пользователей:\n\n"+statusers);
 									});
 									break;
 								case 'days':
