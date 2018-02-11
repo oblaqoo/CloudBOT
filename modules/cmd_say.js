@@ -12,7 +12,6 @@ module.exports = {
 				var w = fs.createWriteStream(fname);
 				request("https://tts.voicetech.yandex.net/generate?text="+encodeURIComponent(obody)+"&format=mp3&lang=ru-RU&speaker="+cbot.config.voice_speaker+"&key="+cbot.config.voice_key+"&speed=1").pipe(w);
 				w.on('finish', function(){
-					console.log('file downloaded  ', fname);
 					msg.sendAudioMessage(fs.createReadStream(fname));
 				});
 			},

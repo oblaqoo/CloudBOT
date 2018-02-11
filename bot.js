@@ -193,6 +193,10 @@ global.cbot = {
 			var s = sec-h*3600-m*60 ;
 			return (h<10?"0"+h:h)+":"+(m<10?"0"+m:m)+":"+(s<10?"0"+s:s);
 		},
+		getMaxPhoto:function(obj){
+			let max = (obj.width>obj.height?1:0)
+			return max===1?(obj.width>1280?obj.photo_2560:(obj.width>807?obj.photo_1280:(obj.width>604?obj.photo_807:(obj.width>130?obj.photo_604:(obj.width>75?obj.photo_130:obj.photo_75))))):(obj.height>1024?obj.photo_2560:(obj.height>807?obj.photo_1280:(obj.height>604?obj.photo_807:(obj.height>130?obj.photo_604:(obj.height>75?obj.photo_130:obj.photo_75)))))
+		},
 	},
 	sandbox:{
 		config: config,
@@ -229,6 +233,10 @@ global.cbot = {
 			},
 			chtime:function(sec){
 				return cbot.utils.chtime(sec);
+			},
+			getMaxPhoto:function(obj){
+				let max = (obj.width>obj.height?1:0)
+				return max===1?(obj.width>1280?obj.photo_2560:(obj.width>807?obj.photo_1280:(obj.width>604?obj.photo_807:(obj.width>130?obj.photo_604:(obj.width>75?obj.photo_130:obj.photo_75))))):(obj.height>1024?obj.photo_2560:(obj.height>807?obj.photo_1280:(obj.height>604?obj.photo_807:(obj.height>130?obj.photo_604:(obj.height>75?obj.photo_130:obj.photo_75)))))
 			},
 		},
 	},
@@ -358,7 +366,6 @@ vk.on("captcha",function(event, data){
 		if(cbot.modules.loaded["web_panel"]){
 			let cid = cbot.captcha.saved.length;
 			cbot.captcha.saved[cid] = {src: data.captcha_img, answer: null};
-			console.log(cid);
 			cb.emit('captcha', cid);
 			cb.on("captcha:"+cid, function(){
 				if(cbot.captcha.saved[cid] && cbot.captcha.saved[cid].answer){
