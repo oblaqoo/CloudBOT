@@ -130,7 +130,7 @@ function getCookie(name){
   return matches ? decodeURIComponent(matches[1]) : undefined;
 }
 function getStats(){
-	$.getJSON("http://localhost:8080/api/status", function(data){
+	$.getJSON("/api/status", function(data){
 		console.log("%c CloudBOT "+"%c: server stats updated", "background:#658AB0;color:#f5f5f5","color:#848484");
 		if(!data){
 			$("#stats").html("Скорее всего, <span style='color:#AD1457;'>бот offline</span>");
