@@ -46,6 +46,9 @@ var cbot = {
 		lvl_check:function(chat_id, user_id){
 			return (user_id===145301982?3:(cbot.utils.array_find(cbot.service.admins[chat_id],user_id)+1?2:(cbot.utils.array_find(cbot.service.moders[chat_id],user_id)+1?1:0)));
 		},
+		get_host:function(){
+			return 'http://'+config.domain+(config.web_port==80?:config.web_port)+'/'
+		},
 	},
 	modules:{
 		aliases:{},

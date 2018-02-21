@@ -20,10 +20,6 @@ module.exports = {
 				name: 'Капча',
 				path: '/captcha.html',
 			},
-			{
-				name: 'Личный Кабинет',
-				path: 'https://oauth.vk.com/authorize?client_id=5951449&display=page&redirect_uri=http://localhost:8080/api/auth&scope=offline&response_type=code&v=5.60',
-			},
 		],
 	},
 	e404:function(res){
@@ -44,6 +40,10 @@ module.exports = {
 		mdl.data.config = cbot.config;
 		mdl.data.cbot = cbot;
 		mdl.data.starttime = cbot.service.counters.start;
+		mdl.data.menu.push({
+				name: 'Личный Кабинет',
+				path: 'https://oauth.vk.com/authorize?client_id=5951449&display=page&redirect_uri='+cbot.service.get_host()+'api/auth&scope=offline&response_type=code&v=5.60',
+			});
 		app.use(cookieParser());
 		app.get('/api/:mthd', function(req, res, next){
 			let method = req.param('mthd', "def")

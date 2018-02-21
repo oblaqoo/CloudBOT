@@ -31,6 +31,7 @@ module.exports = {
 	],
 	voice_key: '', //получите API-ключ SpeechKit Cloud здесь: https://developer.tech.yandex.ru/keys/
 	voice_speaker: 'zahar', //голос синтезированной речи. Можно выбрать один из следующих голосов: женские голоса: jane, oksana, alyss и omazh; мужские голоса: zahar и ermil.
+	domain: 'oblaqoo.ru', //домен, ведущий на сервер с ботом
 	callback:{ //конфиги для работы бота в сообществах; заполнять с помощью ВК: Ваше сообщество -> Управление сообществом -> Работа с API -> Callback API
 		group: false, //бот запущен в сообществе? true - да / false - нет
 		port: 80, //порт, нужен для проксирования, например, через nginx
