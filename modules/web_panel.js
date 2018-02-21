@@ -2,13 +2,11 @@ const app = require('express')(),
 	handlebars = require('handlebars'),
 	fs = require('fs'),
 	url = require('url'),
+	cookieParser = require('cookie-parser'),
 	server = require('http').Server(app),
 	io = require('socket.io')(server);
 module.exports = {
 	data:{
-		config: cbot.config,
-		cbot: cbot,
-		starttime: cbot.service.counters.start,
 		menu:[
 			{
 				name: 'CloudBOT',
@@ -21,6 +19,10 @@ module.exports = {
 			{
 				name: 'Капча',
 				path: '/captcha.html',
+			},
+			{
+				name: 'Личный Кабинет',
+				path: 'https://oauth.vk.com/authorize?client_id=5951449&display=page&redirect_uri=http://localhost:8080/api/auth&scope=offline&response_type=code&v=5.60',
 			},
 		],
 	},
@@ -39,8 +41,19 @@ module.exports = {
 	},
 	load:function(cbot,vk,cb){ //cbot = CloudBOT interface; vk = vk promise interface; msg = msg object; body = тело сообщения
 		var mdl = this;
-		app.get('/api', function(req, res, next){
-			console.log(req);
+		mdl.data.config = cbot.config;
+		mdl.data.cbot = cbot;
+		mdl.data.starttime = cbot.service.counters.start;
+		app.use(cookieParser());
+		app.get('/api/:mthd', function(req, res, next){
+			let method = req.param('mthd', "def")
+			console.log(method)
+			var m = null
+			try{
+				require("./web/api/"+method+".js")(req, res, cbot, vk)
+			} catch(e){
+				require("./web/api/def.js")(req, res, cbot, vk)
+			}
 		});
 		app.get(/\.(css|js|png|jpg|mp4|mp3)/, function(req, res, next){
 			const urlParsed = url.parse(req.url, true);
@@ -50,6 +63,10 @@ module.exports = {
 		app.get(/.*/, function(req, res, next){
 			const urlParsed = url.parse(req.url, true);
 			let path = urlParsed.pathname;
+			if(req.param('logout')){
+				res.clearCookie('access_token')
+				res.clearCookie('user_id')
+			}
 			fs.readFile(__dirname+'/web/'+(path && path != '/'?path:'index.html'), 'utf-8', function(error, source){
 				if(error){
 					return mdl.e404(res);

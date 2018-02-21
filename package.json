@@ -16,6 +16,7 @@
     "VK-Promise": "^0.2.91",
     "chalk": "^2.3.0",
     "connect": "^3.6.5",
+    "cookie-parser": "^1.4.3",
     "events": "^1.1.1",
     "express": "^4.16.2",
     "fs": "0.0.1-security",
@@ -28,6 +29,7 @@
     "request": "^2.83.0",
     "socket.io": "^2.0.4",
     "unhandled-rejection": "^1.0.0",
-    "url": "^0.11.0"
+    "url": "^0.11.0",
+    "vm": "^0.1.0"
   }
 }

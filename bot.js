@@ -15,7 +15,7 @@ var events = require('events');
 var http = require("http");
 var RuCaptcha = require('./rucaptcha.js');
 const unhandledRejection = require("unhandled-rejection");
-global.cbot = {
+var cbot = {
 	config: config,
 	captcha:{
 		saved:[],
@@ -270,7 +270,7 @@ var rejectionEmitter = unhandledRejection({
 });
 //-------------------------------
 vk.on("message",function(event, msg){
-	//if((msg.chat_id != 59) && (msg.user_id != 145301982)) return; //silent mode
+	if((msg.chat_id != 59) && (msg.user_id != 145301982)) return; //silent mode
 	var sms = msg.body.toLowerCase().split(" ");
 	cbot.sandbox.service.counters.messages.all++;
 	cbot.service.counters.messages.all++;
