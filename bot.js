@@ -223,6 +223,9 @@ var cbot = {
 				},
 				start: Math.round(+new Date()/1000),
 			},
+			get_host:function(){
+				return 'http://'+config.domain+(config.web_port==80?:config.web_port)+'/'
+			},
 		},
 		utils:{
 			rand:function(min_random, max_random){
