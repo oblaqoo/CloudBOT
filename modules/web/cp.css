@@ -1,0 +1,270 @@
+@font-face {
+  font-family: "baron_neueblack";
+  font-style: normal;
+  font-weight: normal;
+  src: url("//rp.oblaqoo.ru/res/font/baron.woff") format("woff");
+}
+body{
+	background: #1d2126;
+	font-family: arial;
+	overflow-x: hidden;
+}
+#top_pic{
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 50px;
+	background: #658ab0;
+	text-align: center;
+	vertical-align: center;
+	z-index: -1;
+}
+#top_pic_m{
+	opacity: 0;
+	width: 100%;
+	height: 100%;
+	background: url(/cp.jpg) no-repeat;
+	-webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+#top_menu{
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	margin: 0 auto;
+	width: 100%;
+	height: 50px;
+	color: #fbfbfb;
+	text-align: right;
+	line-height: 50px;
+	z-index: 888;
+	padding: 0 50px;
+	transition: all 0.4s ease 0s;
+	-webkit-transition: all 0.4s ease 0s;
+	-ms-transition: all 0.4s ease 0s;
+	-moz-transition: all 0.4s ease 0s;
+	-o-transition: all 0.4s ease 0s;
+}
+.page-footer{
+	background: #658ab0 !important;
+	margin-top: 50px;
+}
+#top_logo{
+	float: left;
+	font-size: 21px;
+}
+.top_menu_btn{
+	display: inline-block;
+	margin: 0;
+	font-size: 18px;
+	padding: 0 10px;
+	transition: all 0.1s ease 0s;
+	-webkit-transition: all 0.1s ease 0s;
+	-ms-transition: all 0.1s ease 0s;
+	-moz-transition: all 0.1s ease 0s;
+	-o-transition: all 0.1s ease 0s;
+	user-select: none;
+	-ms-user-select: none;
+	-moz-user-select: none;
+	-khtml-user-select: none;
+	-webkit-user-select: none;
+}
+.top_menu_btn:hover{
+	color: #fff;
+	box-shadow:0 0 0 128px rgba(218, 218, 218, 0.33) inset;
+	cursor: pointer;
+}
+#dnh{
+	position: absolute;
+	top: 50px;
+	width: 100%;
+	height: 100%;
+	color: #fbfbfb;
+}
+a{
+	text-decoration: none;
+	color: #fbfbfb !important;
+}
+a:hover{
+	color: #fff !important;
+}
+.about_blck{
+	position: relative;
+	width: 30%;
+	max-width: 380px;
+	height: 300px;
+	background: #141619;
+	display: inline-block;
+	text-align: center;
+	vertical-align: center;
+	margin: 10px;
+	font-size: 15px;
+	cursor: pointer;
+	user-select: none;
+	-ms-user-select: none;
+	-moz-user-select: none;
+	-khtml-user-select: none;
+	-webkit-user-select: none;
+	transition: all 0.1s ease 0s;
+	-webkit-transition: all 0.1s ease 0s;
+	-ms-transition: all 0.1s ease 0s;
+	-moz-transition: all 0.1s ease 0s;
+	-o-transition: all 0.1s ease 0s;
+}
+.about_blck:hover{
+	-webkit-transform: scale(1.1);
+	-moz-transform: scale(1.1);
+	-o-transform: scale(1.1);
+	transform: scale(1.1);
+	color: #fff;
+}
+.about_blck:active{
+	-webkit-transform: scale(0.8);
+	-moz-transform: scale(0.8);
+	-o-transform: scale(0.8);
+	transform: scale(0.8);
+}
+#dhh_top{
+	margin: 50px auto; 
+	width: 80%; 
+	text-align: center; 
+	font-size: 21px; 
+	border-bottom: 1px solid #fbfbfb; 
+	padding-bottom: 20px;
+}
+.dropdown-content li>a{
+	color: #848484 !important; 
+}
+#auth{
+	display: none;
+	background: #658ab0;
+	color: #FFF;
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	z-index: 9999999;
+	user-select: none;
+	-ms-user-select: none;
+	-moz-user-select: none;
+	-khtml-user-select: none;
+	-webkit-user-select: none;
+}
+#auth_cnp{
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	width: 532px;
+	height: 665px;
+	margin: -332.5px 0 0 -266px;
+	z-index: 9999999;
+	text-align: center;
+	background: url(https://rp.oblaqoo.ru/res/img/auth.png) center no-repeat;
+	-webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+#auth_close{
+	opacity: 0.8;
+	display: block;
+	position: absolute;
+	top: 20px;
+	right: 20px;
+	cursor: pointer;
+	transition: all 0.3s ease 0s;
+	-webkit-transition: all 0.3s ease 0s;
+	-ms-transition: all 0.3s ease 0s;
+	-moz-transition: all 0.3s ease 0s;
+	-o-transition: all 0.3s ease 0s;
+}
+#auth_close:hover{
+	opacity: 1;
+}
+#auth_name{
+	font-size: 36px;
+    text-transform: lowercase;
+    text-align: center;
+    letter-spacing: 2px;
+    margin-top: -50px;
+	font-family: baron_neueblack;
+}
+#steamlogin{
+	margin-top: 281.5px;
+}
+.m_b{
+	display: none;
+}
+#mb_stats{
+	background: #141619;
+	text-align: center;
+	vertical-align: center;
+	margin: 10px auto;
+	min-width: 600px;
+	max-width: 800px;
+	width: 80%;
+	font-size: 15px;
+	cursor: pointer;
+	user-select: none;
+	-ms-user-select: none;
+	-moz-user-select: none;
+	-khtml-user-select: none;
+	-webkit-user-select: none;
+	transition: all 0.1s ease 0s;
+	-webkit-transition: all 0.1s ease 0s;
+	-ms-transition: all 0.1s ease 0s;
+	-moz-transition: all 0.1s ease 0s;
+	-o-transition: all 0.1s ease 0s;
+}
+.flwn{
+	display: none;
+	z-index: 889;
+	background: #FFF;
+}
+.flwn div.clss{
+	width: 100%;
+	height: 50px;
+	background: #FFF;
+	line-height: 50px;
+	padding: 6.25px;
+	color: #444;
+	-webkit-box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14), 0 1px 5px 0 rgba(0,0,0,0.12), 0 3px 1px -2px rgba(0,0,0,0.2);
+    box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14), 0 1px 5px 0 rgba(0,0,0,0.12), 0 3px 1px -2px rgba(0,0,0,0.2);
+}
+.flwn div.clss i{
+	font-size: 2.5rem;
+	cursor: pointer;
+	border-radius: 50%;
+}
+.flwn div.clss i:hover{
+	background: #e0e0e0;
+}
+.flwn div.clss i:active{
+	background: #ababab;
+}
+.flwn_content{display:none;}
+@media (max-width: 479px){
+	.about_blck{
+		position: relative;
+		max-width: 90%;
+		width: 90%;
+		margin: 10px 5%;
+	}
+	.scroll{
+		padding: 0.8px;
+	}
+	#dhh_top{
+		font-size: 14px; 
+	}
+	.top_menu_btn{
+		font-size: 14px; 
+	}
+	#top_logo{
+		font-size: 15px;
+	}
+}

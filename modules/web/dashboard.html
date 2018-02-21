@@ -1,0 +1,160 @@
+<title>Панель управления | CloudBOT</title>
+<meta name="theme-color" content="#658ab0">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<link rel="stylesheet" href="/cp.css">
+<div id="top_pic"><div id="top_pic_m"></div><img src="/cp.jpg" width="0" height="0" onload="$(this).remove(); $('#top_pic_m').animate({'opacity':1},200);"></div>
+<div id="top_menu">
+	<div class="revealator-slidedown top_menu_btn" id="top_logo">CloudBOT</div>
+	<a href="https://vk.com/cloudbot_official" target="_blank" class="revealator-slidedown top_menu_btn">ВКонтакте</a>
+	<a href="#!" class="revealator-slidedown top_menu_btn dropdown-button" data-activates="auth_types" data-belowOrigin="true" data-alignment="right">Выйти</a>
+	<ul id='auth_types' class='dropdown-content'>
+		<span style="padding: 0 8px; color: #848484;">Вы уверены?</span>
+		<li><a href="/?logout=1">Да</a></li>
+	</ul>
+</div>
+<div id="dnh">
+	<div class="revealator-slideup revealator-delay1" id="dhh_top">Добро пожаловать в Ваш личный кабинет, <span class="user_name">{name}</span> <span class="user_lastname">{lastname}</span>!</div>
+	<div id="main_blocks" style="text-align:center;">
+		<div class="about_blck" id="ab1" onclick="win.open(this,'#ustats')"><div style="position: absolute;top: 50%;transform: translateY(-50%); margin: 10px;"><i class="material-icons large">&#xE7FD;</i><br/><br/><b>Статистика персонажа</b><br/>В этом разделе Вы можете просмотреть статистику своего персонажа.</div></div>
+		<a href="https://vk.com/cloudbot_official" target="_blank"><div class="about_blck" id="ab2"><div style="position: absolute;top: 50%;transform: translateY(-50%); margin: 10px;"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="80px" height="80px"><image x="0px" y="0px" width="80px" height="80px" xlink:href="data:img/png;base64,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" /></svg><br/><br/><b>ВКонтакте</b><br/>Официальная группа ВКонтакте. Порой, здесь оповещают о новых фичах и знакомят с функциями бота...</div></div></a>
+		<div class="about_blck" id="ab3" onclick="win.open(this,'#chats')"><div style="position: absolute;top: 50%;transform: translateY(-50%); margin: 10px;"><i class="material-icons large">&#xE0BE;</i><br/><br/><b>Беседы</b><br/>Каталог и настройки чатов. Сюда также переехал раздел "Открытые чаты"</div></div>
+		<div class="about_blck" id="ab4" onclick="win.open(this,'#moneys')"><div style="position: absolute;top: 50%;transform: translateY(-50%); margin: 10px;"><i class="material-icons large">&#xE263;</i><br/><br/><b>Банк</b><br/>Здесь Вы можете управлять Вашими тугриками. За них можно купить что-нибудь, например, негра :)</div></div>
+	</div>
+	<footer class="page-footer">
+		<div class="container">
+			<div class="row">
+				<div class="col l6 s12">
+					<h5 class="white-text">Мониторинг</h5>
+					<p class="grey-text text-lighten-4" id="stats">Обновление данных...</p>
+				</div>
+				<div class="col l4 offset-l2 s12">
+					<h5 class="white-text">Ссылки</h5>
+					<ul>
+						<li><a class="grey-text text-lighten-3" href="https://vk.com/oblaqoo" target="_blank">Разработчик</a></li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<div class="footer-copyright">
+			<div class="container">
+				© 2018 oblaqoo
+				<a class="grey-text text-lighten-4 right dropdown-button" href='#' data-activates="projects">Все проекты</a>
+				<ul id='projects' class='dropdown-content'>
+					<li><a href="https://oblaqoo.ru/" target="_blank">oblaqoo</a></li>
+					<li class="divider"></li>
+					<li><a href="https://bot.oblaqoo.ru/" target="_blank">CloudBOT</a></li>
+					<li><a href="https://rp.oblaqoo.ru/" target="_blank">True-RP</a></li>
+					<li><a href="#!">SignaAPI</a></li>
+					<li><a href="#!">Поле</a></li>
+				</ul>
+			</div>
+		</div>
+	</footer>
+</div>
+<div class="flwn" id="uinfo">
+	<div class="flwn_content">
+		<img src="" id="ped" style="display: block; max-width: 120px; margin: 10px auto;">
+		<table class="highlight" style="width: 50%; min-width: 300px; max-width: 800px; margin: auto;">
+			<thead>
+				<tr>
+					<th>True-ID</th>
+					<th>Registration</th>
+					<th>Личность</th>
+					<th>Телефон</th>
+					<th>Другое</th>
+				</tr>
+			</thead>
+			<tbody id="user_table"></tbody>
+		</table>
+		<img src="https://rp.oblaqoo.ru/res/img/loading.gif" id="preload_ped" style="display:none;" onload="$('#ped').attr('src', $(this).attr('src'))">
+	</div>
+</div>
+<div class="flwn" id="chats">
+	<div class="flwn_content">
+		<div style="text-align: center;">Здесь пока пусто....</div>
+	</div>
+</div>
+<div class="flwn" id="ustats">
+	<div class="flwn_content">
+		<div style="text-align: center;">Здесь пока пусто....</div>
+	</div>
+</div>
+<div class="flwn" id="moneys">
+	<div class="flwn_content">
+		<div style="text-align: center;">Здесь пока пусто....</div>
+	</div>
+</div>
+<script src="https://bot.oblaqoo.ru/mrrobot/fm.revealator.jquery.min.js" type="text/javascript"></script>
+<link rel="stylesheet" href="https://bot.oblaqoo.ru/mrrobot/fm.revealator.jquery.min.css">
+<script src="//rp.oblaqoo.ru/res/js/tilt.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
+<script>
+if(!getCookie('access_token')) window.location.replace("/index.html");
+$.getJSON('https://cors-anywhere.herokuapp.com/https://api.vk.com/method/users.get?fields=photo_50,domain&access_token='+getCookie('access_token'), function(data){
+	$('.user_name').text(data.response[0].first_name)
+	$('.user_lastname').text(data.response[0].last_name)
+})
+getStats();
+
+var win = {
+	open:function(pr,cl){
+		var start_pos = $(pr).offset();
+		var pr_rz = [$(pr).height(),$(pr).width()];
+		$('<div class="clss" id="clss'+$(cl).attr('id')+'"><i class="material-icons" onclick="win.close(\'#'+$(pr).attr('id')+'\',\''+cl+'\')">&#xE5C4;</i></div>').prependTo(cl);
+		$(cl).css({'display': 'block', 'width':'1px', 'height':'1px', 'border-radius':'50%', 'left': start_pos.left+(pr_rz[1]/2), 'top': start_pos.top+(pr_rz[0]/2)});
+		$(cl).show();
+		$(cl).animate({'width':'500px', 'height':'500px', 'border-radius':'40%', 'left': 0, 'top': 0},100);
+		$(cl).animate({'width':'100%', 'height':'100%', 'border-radius':'0', 'left': 0, 'top': 0},100);
+		$(cl).css({'position':'fixed'});
+		$('.flwn_content').fadeIn('slow');
+		return true;
+	},
+	close:function(pr,cl){
+		var start_pos = $(pr).offset();
+		var pr_rz = [$(pr).height(),$(pr).width()];
+		$('.flwn_content').hide('');
+		$(cl).css({'position':'absolute'});
+		$(cl).animate({'width':'800px', 'height':'800px', 'border-radius':'10%', 'left': 0, 'top': 0},100);
+		$(cl).animate({'width':'1px', 'height':'1px', 'border-radius':'50%', 'left': start_pos.left+(pr_rz[1]/2), 'top': start_pos.top+(pr_rz[0]/2)},100).fadeOut(100);
+		$('#clss'+$(cl).attr('id')).remove();
+		return true;
+	}
+}
+function getCookie(name){
+  var matches = document.cookie.match(new RegExp(
+    "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
+  ));
+  return matches ? decodeURIComponent(matches[1]) : undefined;
+}
+function getStats(){
+	$.getJSON("http://localhost:8080/api/status", function(data){
+		console.log("%c CloudBOT "+"%c: server stats updated", "background:#658AB0;color:#f5f5f5","color:#848484");
+		if(!data){
+			$("#stats").html("Скорее всего, <span style='color:#AD1457;'>бот offline</span>");
+			setTimeout(function(){getStats()},2000);
+			return 0;
+		}
+		$("#stats").html("В данный момент бот загружен на "+data.cpu+"%");
+		setTimeout(function(){getStats()},10000);
+	}).fail(function(){$("#stats").html("<span style='color:#AD1457;'>Не удалось подключиться к боту!</span>");});
+}
+
+window.isMobileOrTablet = function() {
+  var check = false;
+  (function(a){if(/(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge |maemo|midp|mmp|mobile.+firefox|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows ce|xda|xiino|android|ipad|playbook|silk/i.test(a)||/1207|6310|6590|3gso|4thp|50[1-6]i|770s|802s|a wa|abac|ac(er|oo|s\-)|ai(ko|rn)|al(av|ca|co)|amoi|an(ex|ny|yw)|aptu|ar(ch|go)|as(te|us)|attw|au(di|\-m|r |s )|avan|be(ck|ll|nq)|bi(lb|rd)|bl(ac|az)|br(e|v)w|bumb|bw\-(n|u)|c55\/|capi|ccwa|cdm\-|cell|chtm|cldc|cmd\-|co(mp|nd)|craw|da(it|ll|ng)|dbte|dc\-s|devi|dica|dmob|do(c|p)o|ds(12|\-d)|el(49|ai)|em(l2|ul)|er(ic|k0)|esl8|ez([4-7]0|os|wa|ze)|fetc|fly(\-|_)|g1 u|g560|gene|gf\-5|g\-mo|go(\.w|od)|gr(ad|un)|haie|hcit|hd\-(m|p|t)|hei\-|hi(pt|ta)|hp( i|ip)|hs\-c|ht(c(\-| |_|a|g|p|s|t)|tp)|hu(aw|tc)|i\-(20|go|ma)|i230|iac( |\-|\/)|ibro|idea|ig01|ikom|im1k|inno|ipaq|iris|ja(t|v)a|jbro|jemu|jigs|kddi|keji|kgt( |\/)|klon|kpt |kwc\-|kyo(c|k)|le(no|xi)|lg( g|\/(k|l|u)|50|54|\-[a-w])|libw|lynx|m1\-w|m3ga|m50\/|ma(te|ui|xo)|mc(01|21|ca)|m\-cr|me(rc|ri)|mi(o8|oa|ts)|mmef|mo(01|02|bi|de|do|t(\-| |o|v)|zz)|mt(50|p1|v )|mwbp|mywa|n10[0-2]|n20[2-3]|n30(0|2)|n50(0|2|5)|n7(0(0|1)|10)|ne((c|m)\-|on|tf|wf|wg|wt)|nok(6|i)|nzph|o2im|op(ti|wv)|oran|owg1|p800|pan(a|d|t)|pdxg|pg(13|\-([1-8]|c))|phil|pire|pl(ay|uc)|pn\-2|po(ck|rt|se)|prox|psio|pt\-g|qa\-a|qc(07|12|21|32|60|\-[2-7]|i\-)|qtek|r380|r600|raks|rim9|ro(ve|zo)|s55\/|sa(ge|ma|mm|ms|ny|va)|sc(01|h\-|oo|p\-)|sdk\/|se(c(\-|0|1)|47|mc|nd|ri)|sgh\-|shar|sie(\-|m)|sk\-0|sl(45|id)|sm(al|ar|b3|it|t5)|so(ft|ny)|sp(01|h\-|v\-|v )|sy(01|mb)|t2(18|50)|t6(00|10|18)|ta(gt|lk)|tcl\-|tdg\-|tel(i|m)|tim\-|t\-mo|to(pl|sh)|ts(70|m\-|m3|m5)|tx\-9|up(\.b|g1|si)|utst|v400|v750|veri|vi(rg|te)|vk(40|5[0-3]|\-v)|vm40|voda|vulc|vx(52|53|60|61|70|80|81|83|85|98)|w3c(\-| )|webc|whit|wi(g |nc|nw)|wmlb|wonu|x700|yas\-|your|zeto|zte\-/i.test(a.substr(0,4)))check = true})(navigator.userAgent||navigator.vendor||window.opera);
+  return check;
+}
+$('.dropdown-button').dropdown({
+      inDuration: 300,
+      outDuration: 225,
+      constrainWidth: false, // Does not change width of dropdown to that of the activator
+      hover: (isMobileOrTablet()?false:true), // Activate on hover
+      gutter: 0, // Spacing from edge
+      belowOrigin: false, // Displays dropdown below the button
+      alignment: 'left', // Displays dropdown with edge aligned to the left of button
+      stopPropagation: true // Stops event propagation
+});
+</script>
