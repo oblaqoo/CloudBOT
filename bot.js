@@ -30,6 +30,7 @@ var cbot = {
 			messages: {
 				all: 0,
 				chats: 0,
+				byuser: {},
 				prv:function(){
 					return cbot.service.counters.messages.all - cbot.service.counters.messages.chats;
 				},
@@ -276,10 +277,11 @@ var rejectionEmitter = unhandledRejection({
 });
 //-------------------------------
 vk.on("message",function(event, msg){
-	if((msg.chat_id != 59) && (msg.user_id != 145301982)) return; //silent mode
+	//if((msg.chat_id != 59) && (msg.user_id != 145301982)) return; //silent mode
 	var sms = msg.body.toLowerCase().split(" ");
 	cbot.sandbox.service.counters.messages.all++;
 	cbot.service.counters.messages.all++;
+	cbot.service.counters.messages.byuser[msg.user_id]++;
 	cb.emit('message', msg);
 	if(!cbot.modules.aliases[sms[0]]) cb.emit('mwa', msg);
 	if(msg.out==true)console.log(chalk.cyan('[MESSAGE]')+chalk.magenta(' OUT')+': '+chalk.yellow(msg.body));
