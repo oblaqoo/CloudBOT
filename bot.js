@@ -6,16 +6,18 @@ try {
 	console.log(chalk.cyan('[CONFIG]')+chalk.yellow(' load config_default.js'));
     var config = require('./config_default.js');
 }
-var fs = require("fs");
-var VK = require("VK-Promise");
-const mysql = require('mysql');
-var md5 = require("nodejs-md5");
-var request = require('request');
-var events = require('events');
-var http = require("http");
-var RuCaptcha = require('./rucaptcha.js');
-const unhandledRejection = require("unhandled-rejection");
+var fs = require("fs"),
+	VK = require("VK-Promise"),
+	mysql = require('mysql'),
+	md5 = require("nodejs-md5"),
+	request = require('request'),
+	events = require('events'),
+	http = require("http"),
+	RuCaptcha = require('./rucaptcha.js'),
+	cb = new events.EventEmitter(),
+	unhandledRejection = require("unhandled-rejection");
 var cbot = {
+	callbacks: require('./'+config.modules_place+'/callbacks.js'),
 	config: config,
 	captcha:{
 		saved:[],
@@ -203,6 +205,7 @@ var cbot = {
 		},
 	},
 	sandbox:{
+		callbacks: require('./'+config.modules_place+'/callbacks.js'),
 		config: config,
 		service:{
 			is_admin:function(chat_id, user_id){
@@ -248,11 +251,11 @@ var cbot = {
 		},
 	},
 }
-var cb = new events.EventEmitter();
 
 //----------init-----------------
-cbot.mysql.connect();
-cbot.modules.load_config();
+cbot.mysql.connect()
+cbot.callbacks.load(cb)
+cbot.modules.load_config()
 if(config.callback.group){
 	var vk = new VK(config.callback.token);
 	var callback = vk.init_callback_api(config.callback.return_key, config.callback.secret_key);
@@ -277,7 +280,7 @@ var rejectionEmitter = unhandledRejection({
 });
 //-------------------------------
 vk.on("message",function(event, msg){
-	//if((msg.chat_id != 59) && (msg.user_id != 145301982)) return; //silent mode
+	if((msg.chat_id != 59) && (msg.user_id != 145301982)) return; //silent mode
 	var sms = msg.body.toLowerCase().split(" ");
 	cbot.sandbox.service.counters.messages.all++;
 	cbot.service.counters.messages.all++;
@@ -344,6 +347,13 @@ vk.on("message",function(event, msg){
 				cbot.mysql.db.query('SELECT * FROM `chat_settings` WHERE ?', {chat_id: msg.chat_id}, function(err,result){
 					if(!result || !result[0]) return;
 					cbot.service.BSC[msg.chat_id] = result[0];
+				});
+				cbot.mysql.db.query('SELECT * FROM `chat_privilege` WHERE ?', {chat_id: msg.chat_id}, function(err,result){
+					if(err) return console.log(chalk.cyan('[MYSQL]')+chalk.redBright(' Failed to load privileges for chat: '+msg.chat_id+'!'), err);
+					if(!result || !result[0]) return;
+					for(var i = 0; i < result.length; i++){
+						(cbot.service[(result[i].lvl==2?'admins':'moders')][msg.chat_id]?cbot.service[(result[i].lvl==2?'admins':'moders')][msg.chat_id].push(result[i].user_id):cbot.service[(result[i].lvl==2?'admins':'moders')][msg.chat_id]=[result[i].user_id]);
+					}
 				});
 			}
 		}
