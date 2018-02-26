@@ -3,6 +3,11 @@ var cbot;
 var mdl = {
 	cities:{},
 	game:function(word, msg){
+		if(!msg.body){
+			return cbot.callbacks.getall(msg).then(function(nmsg){
+				mdl.game(nmsg.body, nmsg)
+			})
+		}
 		var wd = word.toLowerCase()
 		if(wd == "стоп игра" || wd == "конец игры" || wd == "закончить игру") return msg.send("Игра окончена! С тобой приятно было играть. ;)")
 		if(!(cbot.utils.array_find(mdl.cities['all'], wd)+1)){
