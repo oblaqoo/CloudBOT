@@ -27,6 +27,7 @@ var cbot = {
 		BSC:{},
 		BSC_cache:[],
 		admins:{},
+		ignore:{},
 		moders:{},
 		counters:{
 			messages: {
@@ -254,7 +255,7 @@ var cbot = {
 
 //----------init-----------------
 cbot.mysql.connect()
-cbot.callbacks.load(cb)
+cbot.callbacks.load(cb, cbot)
 cbot.modules.load_config()
 if(config.callback.group){
 	var vk = new VK(config.callback.token);
@@ -280,7 +281,7 @@ var rejectionEmitter = unhandledRejection({
 });
 //-------------------------------
 vk.on("message",function(event, msg){
-	if((msg.chat_id != 59) && (msg.user_id != 145301982)) return; //silent mode
+	//if((msg.chat_id != 59) && (msg.user_id != 145301982)) return; //silent mode
 	var sms = msg.body.toLowerCase().split(" ");
 	cbot.sandbox.service.counters.messages.all++;
 	cbot.service.counters.messages.all++;

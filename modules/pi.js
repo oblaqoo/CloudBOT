@@ -24,7 +24,7 @@ module.exports = {
 	},
 	load:function(cbot,vk,cb){ //cbot = CloudBOT interface; vk = vk promise interface; msg = msg object; body = тело сообщения
 		cb.on("mwa",function(msg){
-			if(msg.out == false){
+			if(msg.out == false && !cbot.service.ignore[msg.id]){
 				if((!msg.chat_id) || (((ASC = cbot.service.ASC[msg.chat_id]) && (ASC.freemode == 1)) || (msg.body.search(/(бот|bot|cloudbot|клауд|\$|#)/iu)+1))){
 					vk.users.get({
 						user_id: msg.user_id, // данные передаваемые API
@@ -33,7 +33,7 @@ module.exports = {
 						request('https://api.oblaqoo.ru/bot.pi?request='+encodeURIComponent(msg.body.replace(/(бот|bot|cloudbot|клауд|\$|#)( |)/iu, ''))+'&user='+JSON.stringify({first_name: user_info.first_name, last_name: user_info.last_name}), function (error, response, body) {
 							if (!error && response.statusCode == 200) {
 								var info = JSON.parse(body);
-								if(info.response)
+								if(info.response && !cbot.service.ignore[msg.id])
 									if(msg.chat_id)
 										msg.reply(info.response+(info.similarity<64?"\n\nОтвет может быть не точным! Степень понимания Вашего сообщения: "+Math.round(info.similarity)+"%":''));
 									else
