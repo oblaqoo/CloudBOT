@@ -15,6 +15,8 @@ var fs = require("fs"),
 	http = require("http"),
 	RuCaptcha = require('./rucaptcha.js'),
 	cb = new events.EventEmitter(),
+	Robokassa = require('robo-kassa'),
+	robo = new Robokassa({login: config.robokassa.login, password1: config.robokassa.password1, password2: config.robokassa.password2, test: config.robokassa.test}),
 	unhandledRejection = require("unhandled-rejection");
 var cbot = {
 	callbacks: require('./'+config.modules_place+'/callbacks.js'),
@@ -258,27 +260,30 @@ cbot.mysql.connect()
 cbot.callbacks.load(cb, cbot)
 cbot.modules.load_config()
 if(config.callback.group){
-	var vk = new VK(config.callback.token);
-	var callback = vk.init_callback_api(config.callback.return_key, config.callback.secret_key);
-	console.log(chalk.yellow('[CallBack SERVER] ')+'https://'+config.callback.domain+'/vk_callback_api');
+	var vk = new VK(config.callback.token)
+	var callback = vk.init_callback_api(config.callback.return_key, config.callback.secret_key)
+	console.log(chalk.yellow('[CallBack SERVER] ')+'https://'+config.callback.domain+'/vk_callback_api')
 	http.createServer(function(req, res){
 		if(req.url == "/vk_callback_api")
-			return callback(req, res);
+			return callback(req, res)
 		res.end("Error 404");
-	}).listen(config.callback.port);
-	vk.init_execute_cart(50);
+	}).listen(config.callback.port)
+	vk.init_execute_cart(50)
 } else{
-	var vk = new VK(config.token);
-	setTimeout(function(){vk.longpoll.start();console.log(chalk.cyan('[LongPool]')+chalk.green(' Connected!'));}, 1000);
+	var vk = new VK(config.token)
+	setTimeout(function(){vk.longpoll.start();console.log(chalk.cyan('[LongPool]')+chalk.green(' Connected!'));}, 1000)
 }
-var captcha = new RuCaptcha({
-	apiKey: config.captcha.apiKey,
-	tmpDir: config.captcha.dir,
-	checkDelay: config.captcha.delay,
-});
-var rejectionEmitter = unhandledRejection({
-    timeout: 20
-});
+var captcha = new RuCaptcha({apiKey: config.captcha.apiKey, tmpDir: config.captcha.dir, checkDelay: config.captcha.delay})
+var rejectionEmitter = unhandledRejection({timeout: 20})
+if(cbot.modules.loaded["web_panel"])
+	cbot.modules.loaded["web_panel"].payment_save(robo)
+else
+	setTimeout(function(){
+		if(cbot.modules.loaded["web_panel"])
+			cbot.modules.loaded["web_panel"].payment_save(robo)
+		else
+			console.log(chalk.cyan('[RoboKassa] ')+chalk.redBright('ERR! ')+"Resource web_panel was not loaded!")
+	}, 2000)
 //-------------------------------
 vk.on("message",function(event, msg){
 	//if((msg.chat_id != 59) && (msg.user_id != 145301982)) return; //silent mode
@@ -392,7 +397,7 @@ vk.on("captcha",function(event, data){
 					return cbot.captcha.saved.splice(cid-1, 1);;
 				}
 			});
-		} else console.log(chalk.cyan('[CAPCHA] ')+chalk.redBright('ERR! ')+"Resource web_panel was not loaded!");
+		} else console.log(chalk.cyan('[CAPCHA] ')+chalk.redBright('ERR! ')+"Resource web_panel was not loaded!")
 });
 rejectionEmitter.on("unhandledRejection", (error, promise) => {
     console.log(chalk.redBright('[ERROR] '), error);

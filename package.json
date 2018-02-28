@@ -27,6 +27,7 @@
     "mysql": "^2.15.0",
     "nodejs-md5": "^1.0.2",
     "request": "^2.83.0",
+    "robo-kassa": "0.0.2",
     "socket.io": "^2.0.4",
     "unhandled-rejection": "^1.0.0",
     "url": "^0.11.0",

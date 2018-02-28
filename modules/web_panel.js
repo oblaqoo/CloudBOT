@@ -6,6 +6,9 @@ const app = require('express')(),
 	server = require('http').Server(app),
 	io = require('socket.io')(server);
 module.exports = {
+	payment_save:function(rk){
+		this.rk = rk
+	},
 	data:{
 		menu:[
 			{
