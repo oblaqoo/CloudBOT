@@ -225,11 +225,15 @@ a:hover{
 	display: none;
 	z-index: 889;
 	background: #FFF;
+	transition: background 0.1s ease 0s;
+	-webkit-transition: background 3s ease 0s;
+	-ms-transition: background 3s ease 0s;
+	-moz-transition: background 3s ease 0s;
+	-o-transition: background 3s ease 0s;
 }
 .flwn div.clss{
 	width: 100%;
 	height: 50px;
-	background: #FFF;
 	line-height: 50px;
 	padding: 6.25px;
 	color: #444;

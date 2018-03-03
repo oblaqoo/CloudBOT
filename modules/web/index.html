@@ -3,15 +3,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
 <link rel="stylesheet" href="/style.css">
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-<div id="menu">
-	{{#each data.menu}}
-		<a href="{{path}}" class="menu_button anim">{{name}}</a>
-	{{/each}}
-</div>
-<div id="mblock"><img id="csc" src="https://oblaqoo.ru/src/CloudBOT/images/logo150.png"><br />Бот для ВКонтакте с модульной системой, открытым кодом и возможностью<br />открытого обучения. Вы можете исправлять ответы и добавлять новые варианты. Результаты<br />обучения будут доступны всем пользователям только после модерации.<br/><br/>CloudBOT'а обучает все сообщество интернета(но это не точно).<br/>Ответы бота не отражают мнения авторов(это важно!).</div>
-<div id="cprt_mdl">v{{data.config.vnum}}</div>
-<div id="cprt">© 2018 <a href="https://oblaqoo.ru/" target="_blank">oblaqoo</a></div>
-
+<body>
+	<div id="menu">
+		{{#each data.menu}}
+			<a href="{{path}}" class="menu_button anim">{{name}}</a>
+		{{/each}}
+	</div>
+	<div id="mblock"><img id="csc" src="https://oblaqoo.ru/src/CloudBOT/images/logo150.png"><br />Бот для ВКонтакте с модульной системой, открытым кодом и возможностью<br />открытого обучения. Вы можете исправлять ответы и добавлять новые варианты. Результаты<br />обучения будут доступны всем пользователям только после модерации.<br/><br/>CloudBOT'а обучает все сообщество интернета(но это не точно).<br/>Ответы бота не отражают мнения авторов(это важно!).</div>
+	<div id="cprt_mdl">v{{data.config.vnum}}</div>
+	<div id="cprt">© 2018 <a href="https://oblaqoo.ru/" target="_blank">oblaqoo</a></div>
+</body>
 <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 <script>
 $('.menu_button[href="{{path}}"]').addClass('active');

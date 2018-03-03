@@ -50,7 +50,6 @@ module.exports = {
 		app.use(cookieParser());
 		app.get('/api/:mthd', function(req, res, next){
 			let method = req.param('mthd', "def")
-			console.log(method)
 			var m = null
 			try{
 				require("./web/api/"+method+".js")(req, res, cbot, vk)

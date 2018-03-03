@@ -32,6 +32,7 @@ var cbot = {
 			step: 0,
 			lock: 0,
 		},
+		users:{},
 		bots:[449640880,336548628,432396674,251235295,449223160,409112618,418084242,470182628,470552975,472076625,471756562,470997341,417021564,429676630,307249355,440955069,462832162,466665907,392676423,348877376,463718240,400936570,367602242,431114820,371041508,426927406,436224530,437161019,355158479,437188501,354115086,353672936,352410165,352238626,371306887,372790495,373145304,409078467,401088448,400955672,395819897,409984129,415293478,415975561,390589361,416131152,384188736,381289640,420376710,375950015,423341950,426724550,374139036,406183827,438500333,98287339,451578961,305796290,305266075,342440244,452051276,272117284,270335012,268204094,258016270,256066300,452702379,455394373,456725735,234820836,459458498,1344682,191385155,311346896,447670853,442449834,340891862,340910454,341419038,442405419,442256849,441082265,348989146,336816275,331130967,329940047,316175457,319144897,446068343,319575808,321437972,324273261,443790591,419703711,463465267,406175214,379230771,371107330,235670580,395810589,222399194,401513434,313421552,181011582,16724459,5367785,442680979,340479023,342439775,441395304,441128669,344033287,441003505,432467689,348985269,436929831,349165031,351091012,445498902,447680103,15438273,468632921,209758819,211054116,469304121,455170471,454508376,289348679,309458330,450829055,310472649,449181554,360007959,432349046,420134742,383049686,399864688,416525089,387502659,404430116,409469777,414542967,405545261,402251272,407837449,413366110,408950140,412555986,382824597,429906465,429383447,430555298,428686680,374585620,375348636,420403354,377391227,459325787,470735140,358933702,443036090,244577506,472930940,157891770,472287546,472286886,438037087,355481701,319528158,457245693,6702078,329933159,370666779,461460001,454184938,404019901,408167031,390669049,459360850,414389491,413368030,468411962,462943368,468114699,395646590,462564572,448771726,292287536,237810835,470904214,364303255,474151730,208352746,402721115,413990384,452868477,469377168,1369452,414440855],
 		admins:{},
 		ignore:{},
@@ -135,6 +136,7 @@ var cbot = {
 			cbot.mysql.db.query("CREATE TABLE IF NOT EXISTS `chat_privilege` ( `id` int(11) NOT NULL AUTO_INCREMENT, `chat_id` int(11) NOT NULL, `user_id` int(11) NOT NULL, `lvl` int(11) NOT NULL, PRIMARY KEY (`id`) ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;");
 			cbot.mysql.db.query("INSERT IGNORE INTO `chat_privilege` (`id`, `chat_id`, `user_id`, `lvl`) VALUES ('1', '0', '0', '0')");
 			cbot.mysql.db.query("CREATE TABLE IF NOT EXISTS `chat_settings` ( `id` int(11) NOT NULL AUTO_INCREMENT, `chat_id` int(11) NOT NULL, `max_warns` int(11) NOT NULL DEFAULT '3', `antimat` int(11) NOT NULL, `time` int(11) NOT NULL, `admin` int(11) NOT NULL, PRIMARY KEY (`id`) ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;");
+			cbot.mysql.db.query("CREATE TABLE IF NOT EXISTS `users` ( `user_id` int(11) NOT NULL, `balance` int(11) NOT NULL, `first_name` varchar(40) NOT NULL, `last_name` varchar(40) NOT NULL, `sex` tinyint(1) NOT NULL, `nickname` varchar(40), `married` int(11) NOT NULL, `avatar` varchar(80) NOT NULL, UNIQUE KEY (`user_id`)) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;");
 			cbot.mysql.db.query("INSERT IGNORE INTO `chat_settings` (`id`, `chat_id`, `max_warns`, `antimat`, `time`, `admin`) VALUES ('1', '0', '0', '0', '0', '0')");
 			cbot.mysql.db.query('SELECT * FROM `chat_privilege`', function(err,result){ //загрузка модеров и админов
 				if(err) return console.log(chalk.cyan('[MYSQL]')+chalk.redBright(' Failed to load privileges!'), err);
@@ -160,6 +162,14 @@ var cbot = {
 					cbot.service.ASC[result[i].chat_id] = result[i];
 				}
 				console.log(chalk.cyan('[MYSQL]')+chalk.green(' ALLChats settings successfully loaded!'));
+			});
+			cbot.mysql.db.query('SELECT * FROM `users`', function(err,result){ //загрузка настроек чатов
+				if(err) return console.log(chalk.cyan('[MYSQL]')+chalk.redBright(' Failed to load users data!'), err);
+				if(!result || !result[0]) return;
+				for(var i = 0; i < result.length; i++){
+					cbot.service.users[result[i].user_id] = result[i];
+				}
+				console.log(chalk.cyan('[MYSQL]')+chalk.green(' Users data successfully loaded!'));
 			});
 		},
 	},
@@ -293,12 +303,22 @@ else
 //-------------------------------
 vk.on("message",function(event, msg){
 	//if((msg.chat_id != 59) && (msg.user_id != 145301982)) return; //silent mode
+	if(!cbot.service.users[msg.user_id]){
+		vk.users.get({
+			user_id: msg.user_id, // данные передаваемые API
+			fields: 'name,lastname,sex,photo_100'
+		}).then(function (user_info){
+			user_info = user_info[0];
+			cbot.mysql.db.query('INSERT INTO `users` (`user_id`,`first_name`,`last_name`,`sex`,`avatar`) VALUES (?,?,?,?,?)', [msg.user_id, user_info.first_name, user_info.last_name, user_info.sex,user_info.photo_100])
+			cbot.service.users[msg.user_id] = {user_id: msg.user_id, first_name: user_info.first_name, last_name: user_info.last_name, sex: user_info.sex, balance: 0, nickname: null, married: 0, avatar: user_info.photo_100};
+		})
+	}
 	var sms = msg.body.toLowerCase().split(" ");
 	cbot.sandbox.service.counters.messages.all++;
 	cbot.service.counters.messages.all++;
 	cbot.service.counters.messages.byuser[msg.user_id]++;
 	if(cbot.service.flood_control.lock) return console.log(chalk.cyan('[FLOOD CONTROL]')+chalk.yellow(' answer blocked')+': '+chalk.cyan(msg.body));
-	if(cbot.utils.array_find(cbot.service.bots, msg.user_id)+1) return console.log(chalk.cyan('[MESSAGE]')+chalk.yellow(' BOT')+': '+chalk.cyan(msg.body));
+	if(!msg.out && cbot.utils.array_find(cbot.service.bots, msg.user_id)+1) return console.log(chalk.cyan('[MESSAGE]')+chalk.yellow(' BOT')+': '+chalk.cyan(msg.body));
 	cb.emit('message', msg);
 	if(!cbot.modules.aliases[sms[0]]) cb.emit('mwa', msg);
 	if(msg.out==true)console.log(chalk.cyan('[MESSAGE]')+chalk.magenta(' OUT')+': '+chalk.yellow(msg.body));
