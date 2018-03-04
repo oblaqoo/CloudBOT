@@ -7,6 +7,7 @@ module.exports = function(req, res, cbot, vk){
 				var info = JSON.parse(body)
 				res.cookie('access_token', info.access_token)
 				res.cookie('user_id', info.user_id)
+				cbot.mysql.db.query("INSERT INTO `secure_tokens` (`access_token`, `user_id`) VALUES (?, ?)", info.access_token, info.user_id);
 				res.end('<script>window.location.replace("/dashboard.html");</script>')
 			} else{
 				res.end("Не удалось идентифицировать Вас")

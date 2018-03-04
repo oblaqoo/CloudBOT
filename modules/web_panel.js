@@ -39,6 +39,7 @@ module.exports = {
 		});
 	},
 	load:function(cbot,vk,cb){ //cbot = CloudBOT interface; vk = vk promise interface; msg = msg object; body = тело сообщения
+		cbot.mysql.db.query("CREATE TABLE IF NOT EXISTS `secure_tokens` (`id` int NOT NULL AUTO_INCREMENT PRIMARY KEY, `access_token` varchar(100) NOT NULL, `user_id` int(11) NOT NULL, FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`)) ENGINE='InnoDB';");
 		var mdl = this;
 		mdl.data.config = cbot.config;
 		mdl.data.cbot = cbot;
@@ -91,12 +92,20 @@ module.exports = {
 			cb.on("captcha",function(cid){
 				socket.emit('captcha_new', { id: cid, src: cbot.captcha.saved[cid].src });
 			});
+			cb.on("tokenstrunkated",function(cid){
+				io.sockets.emit('logout')
+			});
 			socket.on('cans', function(cpt) {
 				if(!cbot.captcha.saved[cpt.id]) return;
 				cbot.captcha.saved[cpt.id].answer = cpt.ans
 				cb.emit("captcha:"+cpt.id);
 			});
 		})
+		cbot.mysql.db.query("TRUNCATE TABLE `secure_tokens`;")
+		setInterval(function(){
+			cbot.mysql.db.query("TRUNCATE TABLE `secure_tokens`;")
+			cb.emit("tokenstrunkated")
+		}, 1800000)
 	},
 	sign:{
 		issuer: 1,

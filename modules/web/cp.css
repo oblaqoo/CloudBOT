@@ -87,9 +87,16 @@ body{
 }
 a{
 	text-decoration: none;
-	color: #fbfbfb !important;
+	color: #658ab0 !important;
 }
 a:hover{
+	color: #5c9ee2 !important;
+}
+#top_menu a, .whitea{
+	text-decoration: none;
+	color: #fbfbfb !important;
+}
+#top_menu a:hover, .whitea:hover{
 	color: #fff !important;
 }
 .about_blck{
@@ -237,8 +244,6 @@ a:hover{
 	line-height: 50px;
 	padding: 6.25px;
 	color: #444;
-	-webkit-box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14), 0 1px 5px 0 rgba(0,0,0,0.12), 0 3px 1px -2px rgba(0,0,0,0.2);
-    box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14), 0 1px 5px 0 rgba(0,0,0,0.12), 0 3px 1px -2px rgba(0,0,0,0.2);
 }
 .flwn div.clss i{
 	font-size: 2.5rem;
@@ -251,8 +256,18 @@ a:hover{
 .flwn div.clss i:active{
 	background: #ababab;
 }
-.flwn_content{display:none;}
-@media (max-width: 479px){
+.flwn_content{
+	display:none;
+	min-height:100%;
+}
+.chats{
+	width: 100% !important;
+	height: 100% !important;
+}
+.collection-item{
+	display: block !important;
+}
+@media (max-width: 600px){
 	.about_blck{
 		position: relative;
 		max-width: 90%;
