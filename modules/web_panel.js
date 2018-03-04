@@ -40,6 +40,10 @@ module.exports = {
 	},
 	load:function(cbot,vk,cb){ //cbot = CloudBOT interface; vk = vk promise interface; msg = msg object; body = тело сообщения
 		cbot.mysql.db.query("CREATE TABLE IF NOT EXISTS `secure_tokens` (`id` int NOT NULL AUTO_INCREMENT PRIMARY KEY, `access_token` varchar(100) NOT NULL, `user_id` int(11) NOT NULL, FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`)) ENGINE='InnoDB';");
+		setInterval(function(){
+			cbot.mysql.db.query("TRUNCATE TABLE `secure_tokens`")
+			cb.emit("tokenstrunkated")
+		}, 1800000)
 		var mdl = this;
 		mdl.data.config = cbot.config;
 		mdl.data.cbot = cbot;
@@ -101,11 +105,6 @@ module.exports = {
 				cb.emit("captcha:"+cpt.id);
 			});
 		})
-		cbot.mysql.db.query("TRUNCATE TABLE `secure_tokens`;")
-		setInterval(function(){
-			cbot.mysql.db.query("TRUNCATE TABLE `secure_tokens`;")
-			cb.emit("tokenstrunkated")
-		}, 1800000)
 	},
 	sign:{
 		issuer: 1,
