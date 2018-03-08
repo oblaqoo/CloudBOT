@@ -285,26 +285,28 @@ module.exports = {
 			aliases: ["open"],
 			description: "Активирует OpenMode режим, позволяющий войти в Ваш чат любому пользователю", //описание функции
 			go:function(cbot,vk,msg,body,tbody,obody){ //cbot = CloudBOT interface; vk = vk promise interface; msg = msg object; body = тело сообщения; tbody = вызванный aliase команды; cbody = тело сообщения без aliase
-				if((msg.user_id !== data.admin_id) && (cbot.service.lvl_check(msg.chat_id,msg.user_id) < 1)){
-					msg.reply('К сожалению, Вы не администратор/модератор этого чата!');
-					return;
-				}
-				msg.reply("OpenMode активирован для этого чата. Теперь любой может вступить в чат здесь: https://vk.cc/7AjkXP");
-				cbot.mysql.db.query('UPDATE `all_chats_settings` SET `open` = 1 WHERE `chat_id` = ?', [msg.chat_id]);
-				cbot.service.ASC[msg.chat_id].open = 1;
+				msg.get().then(function(data){
+					if((msg.user_id !== data.admin_id) && (cbot.service.lvl_check(msg.chat_id,msg.user_id) < 1)){
+						return msg.reply('К сожалению, Вы не администратор/модератор этого чата!')
+					}
+					msg.reply("OpenMode активирован для этого чата. Теперь любой может вступить в чат здесь: https://vk.cc/7AjkXP");
+					cbot.mysql.db.query('UPDATE `all_chats_settings` SET `open` = 1 WHERE `chat_id` = ?', [msg.chat_id]);
+					cbot.service.ASC[msg.chat_id].open = 1;
+				})
 			},
 		},
 		'close':{
 			aliases: ["close"],
 			description: "Деактивирует OpenMode режим, позволяющий войти в Ваш чат любому пользователю", //описание функции
 			go:function(cbot,vk,msg,body,tbody,obody){ //cbot = CloudBOT interface; vk = vk promise interface; msg = msg object; body = тело сообщения; tbody = вызванный aliase команды; cbody = тело сообщения без aliase
-				if((msg.user_id !== data.admin_id) && (cbot.service.lvl_check(msg.chat_id,msg.user_id) < 1)){
-					msg.reply('К сожалению, Вы не администратор/модератор этого чата!');
-					return;
-				}
-				msg.reply("OpenMode деактивирован для этого чата. Теперь в чат можно вступить только по приглашению участников чата");
-				cbot.mysql.db.query('UPDATE `all_chats_settings` SET `open` = 0 WHERE `chat_id` = ?', [msg.chat_id]);
-				cbot.service.ASC[msg.chat_id].open = 0;
+				msg.get().then(function(data){
+					if((msg.user_id !== data.admin_id) && (cbot.service.lvl_check(msg.chat_id,msg.user_id) < 1)){
+						return msg.reply('К сожалению, Вы не администратор/модератор этого чата!')
+					}
+					msg.reply("OpenMode деактивирован для этого чата. Теперь в чат можно вступить только по приглашению участников чата");
+					cbot.mysql.db.query('UPDATE `all_chats_settings` SET `open` = 0 WHERE `chat_id` = ?', [msg.chat_id]);
+					cbot.service.ASC[msg.chat_id].open = 0
+				})
 			},
 		},
 		'rules':{

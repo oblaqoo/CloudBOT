@@ -267,6 +267,9 @@ a:hover{
 .collection-item{
 	display: block !important;
 }
+.btn, .btn-large{
+	background-color: #FFF !important;
+}
 @media (max-width: 600px){
 	.about_blck{
 		position: relative;
