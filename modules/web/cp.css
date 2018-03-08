@@ -264,6 +264,9 @@ a:hover{
 	width: 100% !important;
 	height: 100% !important;
 }
+.collection{
+	overflow-y: auto;
+}
 .collection-item{
 	display: block !important;
 }
