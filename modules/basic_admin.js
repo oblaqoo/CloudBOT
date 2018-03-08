@@ -348,12 +348,44 @@ module.exports = {
 				msg.send('[id'+msg.user_id+'|Администратор] установил максимальное количество предупреждений значением - '+count+'. При получении '+(count+1)+' предупреждения нарушитель порядка будет заблокирован!');
 			},
 		},
+		'fixname':{
+			aliases: ["fixname"],
+			description: "Блокирует изменение названия беседы", //описание функции
+			go:function(cbot,vk,msg,body,tbody,obody){ //cbot = CloudBOT interface; vk = vk promise interface; msg = msg object; body = тело сообщения; tbody = вызванный aliase команды; cbody = тело сообщения без aliase
+				var acheck = cbot.service.lvl_check(msg.chat_id,msg.user_id);
+				if(acheck < 1){
+					msg.reply('К сожалению, Вы не администратор/модератор этого чата!');
+					return;
+				}
+				cbot.service.fixnames[msg.chat_id] = msg.title
+				cbot.mysql.db.query("UPDATE storage SET data = ? WHERE user_id = 0 AND chat_id = 0 AND col = 'fixnames'", JSON.stringify(cbot.service.fixnames));
+				msg.send('[id'+msg.user_id+'|Администратор] зафиксировал текущее название беседы. При его изменении изменивший название получит предупреждение!');
+			},
+		},
+		'unfixname':{
+			aliases: ["unfixname"],
+			description: "Разблокирует изменение названия беседы", //описание функции
+			go:function(cbot,vk,msg,body,tbody,obody){ //cbot = CloudBOT interface; vk = vk promise interface; msg = msg object; body = тело сообщения; tbody = вызванный aliase команды; cbody = тело сообщения без aliase
+				var acheck = cbot.service.lvl_check(msg.chat_id,msg.user_id);
+				if(acheck < 1){
+					msg.reply('К сожалению, Вы не администратор/модератор этого чата!');
+					return;
+				}
+				delete cbot.service.fixnames[msg.chat_id]
+				cbot.mysql.db.query("UPDATE storage SET data = ? WHERE user_id = 0 AND chat_id = 0 AND col = 'fixnames'", JSON.stringify(cbot.service.fixnames));
+				msg.send('[id'+msg.user_id+'|Администратор] разблокировал возможность менять текущее название беседы!');
+			},
+		},
 	},
 	load:function(cbot,vk,cb){
 		cbot.mysql.db.query("CREATE TABLE IF NOT EXISTS `ban` ( `id` int(11) NOT NULL AUTO_INCREMENT, `user_id` int(11) NOT NULL, `chat_id` int(11) NOT NULL, PRIMARY KEY (`id`) ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;");
 		cbot.mysql.db.query("CREATE TABLE IF NOT EXISTS `warns` ( `id` int(11) NOT NULL AUTO_INCREMENT, `user_id` int(11) NOT NULL, `count` int(11) NOT NULL, `chat_id` int(11) NOT NULL, PRIMARY KEY (`id`) ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;");
-		cb.on("mwa",function(msg){
-			if((msg.action) && ((msg.action == 'chat_invite_user') || (msg.action == 'chat_invite_user_by_link'))){
+		cbot.mysql.db.query("INSERT IGNORE INTO `storage` (`id`, `chat_id`, `user_id`, `col`, `data`) VALUES (null, '0', '0', 'fixnames', '{}')");
+		cbot.mysql.db.query("SELECT `data` FROM `storage` WHERE `user_id` = '0' AND `chat_id` = '0' AND `col` = 'fixnames'", function(e, d){
+			cbot.service.fixnames = JSON.parse(d[0].data)
+		})
+		cb.on("action",function(msg){
+			if((msg.action == 'chat_invite_user') || (msg.action == 'chat_invite_user_by_link')){
 				cbot.mysql.db.query('SELECT * FROM `ban` WHERE chat_id = ? AND user_id = ?', [msg.chat_id,msg.action_mid], function(err,result){
 					if(!result || !result[0]) return;
 					if(msg.action == 'chat_invite_user_by_link'){
@@ -384,6 +416,33 @@ module.exports = {
 							}
 							msg.removeChatUser(msg.action_mid);
 						});
+					});
+				});
+			} else if(msg.action == 'chat_title_update' && msg.user_id != cbot.config.bot_id){
+				if(!cbot.service.fixnames[msg.chat_id]) return;
+				msg.editChat(cbot.service.fixnames[msg.chat_id])
+				chat_info = cbot.service.BSC[msg.chat_id];
+				cbot.mysql.db.query('SELECT * FROM `warns` WHERE chat_id = ? AND user_id = ?', [msg.chat_id,msg.user_id], function(err,result){
+					if(!result || !result[0]){
+						var dd = {user_id: msg.user_id, chat_id: msg.chat_id, count: 1};
+						cbot.mysql.db.query('INSERT INTO `warns` SET ?', dd);
+						var bd_warn_count = 1;
+					} else{
+						var bd_warn_count = result[0].count + 1;
+						cbot.mysql.db.query('UPDATE `warns` SET `count` = ? WHERE `user_id` = ? AND `chat_id` = ?', [bd_warn_count, msg.user_id, msg.chat_id]);
+					}
+					vk.users.get({
+						user_id: msg.user_id, // данные передаваемые API
+						fields: 'name,lastname,sex'
+					}).then(function (ban_user_info){
+						ban_user_info = ban_user_info[0];
+						if(bd_warn_count > chat_info.max_warns){
+							cbot.mysql.db.query('INSERT INTO `ban` SET ?', {user_id: msg.user_id, chat_id: msg.chat_id});
+							msg.send("[id"+msg.user_id+"|"+ban_user_info.first_name+" "+ban_user_info.last_name+"] забанен"+(ban_user_info.sex==1?'а':'')+" в этом чате за изменение названия чата.");
+							msg.removeChatUser(msg.user_id);
+						} else{
+							msg.send("[id"+msg.user_id+"|"+ban_user_info.first_name+" "+ban_user_info.last_name+"] получил"+(ban_user_info.sex==1?'а':'')+" предупреждение за изменение названия чата.\n\nВ данный момент он"+(ban_user_info.sex==1?'а':'')+" имеет "+bd_warn_count+"/"+chat_info.max_warns+" предупреждений.");
+						}
 					});
 				});
 			}

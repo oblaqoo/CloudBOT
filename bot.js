@@ -132,6 +132,7 @@ var cbot = {
 			});
 		},
 		load:function(){ //подгрузка данных из БД
+			cbot.mysql.db.query("CREATE TABLE IF NOT EXISTS `storage` ( `id` int(11) NOT NULL AUTO_INCREMENT, `chat_id` int(11) NOT NULL, `user_id` int(11) NOT NULL, `col` varchar(40) NOT NULL, `data` text NOT NULL, PRIMARY KEY (`id`), UNIQUE KEY `chat_id_user_id_col` (`chat_id`,`user_id`,`col`) ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;");
 			cbot.mysql.db.query("CREATE TABLE IF NOT EXISTS `all_chats_settings` ( `chat_id` int(11) NOT NULL, `freemode` int(1) NOT NULL DEFAULT '0', `voice` int(1) NOT NULL DEFAULT '1', `open` int(1) NOT NULL DEFAULT '0', `rules` varchar(800) NOT NULL DEFAULT 'В этом чате не установлены правила. Для того, чтобы установить правила отправьте !changerules и желаемые правила чата.', UNIQUE KEY `chat_id` (`chat_id`) ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;");
 			cbot.mysql.db.query("CREATE TABLE IF NOT EXISTS `chat_privilege` ( `id` int(11) NOT NULL AUTO_INCREMENT, `chat_id` int(11) NOT NULL, `user_id` int(11) NOT NULL, `lvl` int(11) NOT NULL, PRIMARY KEY (`id`) ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;");
 			cbot.mysql.db.query("INSERT IGNORE INTO `chat_privilege` (`id`, `chat_id`, `user_id`, `lvl`) VALUES ('1', '0', '0', '0')");
@@ -309,7 +310,7 @@ vk.on("message",function(event, msg){
 			fields: 'name,lastname,sex,photo_100'
 		}).then(function (user_info){
 			user_info = user_info[0];
-			cbot.mysql.db.query('INSERT INTO `users` (`user_id`,`first_name`,`last_name`,`sex`,`avatar`) VALUES (?,?,?,?,?)', [msg.user_id, user_info.first_name, user_info.last_name, user_info.sex,user_info.photo_100])
+			cbot.mysql.db.query('INSERT IGNORE INTO `users` (`user_id`,`first_name`,`last_name`,`sex`,`avatar`) VALUES (?,?,?,?,?)', [msg.user_id, user_info.first_name, user_info.last_name, user_info.sex,user_info.photo_100])
 			cbot.service.users[msg.user_id] = {user_id: msg.user_id, first_name: user_info.first_name, last_name: user_info.last_name, sex: user_info.sex, balance: 0, nickname: null, married: 0, avatar: user_info.photo_100};
 		})
 	}
@@ -320,7 +321,8 @@ vk.on("message",function(event, msg){
 	if(cbot.service.flood_control.lock) return console.log(chalk.cyan('[FLOOD CONTROL]')+chalk.yellow(' answer blocked')+': '+chalk.cyan(msg.body));
 	if(!msg.out && cbot.utils.array_find(cbot.service.bots, msg.user_id)+1) return console.log(chalk.cyan('[MESSAGE]')+chalk.yellow(' BOT')+': '+chalk.cyan(msg.body));
 	cb.emit('message', msg);
-	if(!cbot.modules.aliases[sms[0]]) cb.emit('mwa', msg);
+	if(!cbot.modules.aliases[sms[0]]) cb.emit('mwa', msg)
+	if(msg.action) cb.emit('action', msg)
 	if(msg.out==true)console.log(chalk.cyan('[MESSAGE]')+chalk.magenta(' OUT')+': '+chalk.yellow(msg.body));
 	if(config.callback.group) event.ok();
 	//actions
