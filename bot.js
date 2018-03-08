@@ -115,7 +115,8 @@ var cbot = {
 			  host: config.bd_host,
 			  user: config.bd_user,
 			  password: config.bd_password,
-			  database: config.bd_db
+			  database: config.bd_db,
+			  charset: 'utf8mb4_general_ci'
 			});
 			cbot.mysql.db.connect(function(err) {
 			  if(err){
