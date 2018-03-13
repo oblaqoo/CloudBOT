@@ -15,23 +15,23 @@ module.exports = {
 				}
 				msg.get().then(function(ddata){
 					var ban_uid = (ddata.fwd_messages?ddata.fwd_messages[0].user_id:null);
-					if((!ban_uid) || (ban_uid == msg.user_id)){
-						msg.reply("Прикрепите сообщение нарушителя!");
-						return;
-					}
-					ban_check = cbot.service.lvl_check(msg.chat_id,ban_uid);
-					if((ban_check != 0) && (acheck < 2)){
-						msg.reply("К сожалению, Вы не можете заблокировать "+(ban_check == 1 ? 'модератора' : 'администратора')+"!");
-						return;
-					}
-					chat_info = cbot.service.BSC[msg.chat_id];
+					if(!ban_uid) ban_uid = obody.indexOf('vk.com')!==-1?obody.split('/')[obody.split('/').length-1]:obody;
 					vk.users.get({
-						user_id: ban_uid, // данные передаваемые API
+						user_ids: msg.user_id+','+ban_uid,
 						fields: 'name,lastname,sex'
 					}).then(function (ban_user_info){
-						ban_user_info = ban_user_info[0];
+						if(!ban_user_info[1] || !ban_user_info[1].id)return msg.reply("Прикрепите сообщение нарушителя!")
+						ban_uid = ban_user_info[1].id
+						ban_check = cbot.service.lvl_check(msg.chat_id,ban_uid);
+						if((ban_check != 0) && (acheck < 2)){
+							msg.reply("К сожалению, Вы не можете заблокировать "+(ban_check == 1 ? 'модератора' : 'администратора')+"!");
+							return;
+						}
+						chat_info = cbot.service.BSC[msg.chat_id]
+						admin_user_info = ban_user_info[0]
+						ban_user_info = ban_user_info[1]
 						cbot.mysql.db.query('INSERT INTO `ban` SET ?', {user_id: ban_uid, chat_id: msg.chat_id});
-						msg.send("[id"+ban_uid+"|"+ban_user_info.first_name+" "+ban_user_info.last_name+"] забанен"+(ban_user_info.sex==1?'а':'')+" в этом чате [id"+msg.user_id+"|Администратором].");
+						msg.send("[id"+ban_uid+"|"+ban_user_info.first_name+" "+ban_user_info.last_name+"] забанен"+(ban_user_info.sex==1?'а':'')+" в этом чате администратором [id"+msg.user_id+"|"+admin_user_info.first_name+" "+admin_user_info.last_name+"].");
 						msg.removeChatUser(ban_uid);
 					});
 				});
@@ -52,16 +52,16 @@ module.exports = {
 				}
 				msg.get().then(function(ddata){
 					var ban_uid = (ddata.fwd_messages?ddata.fwd_messages[0].user_id:null);
-					if((!ban_uid) || (ban_uid == msg.user_id)){
-						msg.reply("Прикрепите сообщение нарушителя!");
-						return;
-					}
-					chat_info = cbot.service.BSC[msg.chat_id];
+					if(!ban_uid) ban_uid = obody.indexOf('vk.com')!==-1?obody.split('/')[obody.split('/').length-1]:obody;
 					vk.users.get({
-						user_id: ban_uid, // данные передаваемые API
+						user_ids: msg.user_id+','+ban_uid,
 						fields: 'name,lastname,sex'
 					}).then(function (ban_user_info){
-						ban_user_info = ban_user_info[0];
+						if(!ban_user_info[1] || !ban_user_info[1].id)return msg.reply("Прикрепите сообщение нарушителя!")
+						ban_uid = ban_user_info[1].id
+						admin_user_info = ban_user_info[0]
+						ban_user_info = ban_user_info[1]
+						ban_check = cbot.service.lvl_check(msg.chat_id,ban_uid);
 						cbot.mysql.db.query('DELETE FROM `ban` WHERE user_id = ? AND chat_id = ?', [ban_uid, msg.chat_id]);
 						cbot.mysql.db.query('DELETE FROM `warns` WHERE user_id = ? AND chat_id = ?', [ban_uid, msg.chat_id]);
 						msg.send("[id"+ban_uid+"|"+ban_user_info.first_name+" "+ban_user_info.last_name+"] разбанен"+(ban_user_info.sex==1?'а':'')+" в этом чате [id"+msg.user_id+"|Администратором].");
@@ -84,30 +84,30 @@ module.exports = {
 				}
 				msg.get().then(function(ddata){
 					var ban_uid = (ddata.fwd_messages?ddata.fwd_messages[0].user_id:null);
-					if((!ban_uid) || (ban_uid == msg.user_id)){
-						msg.reply("Прикрепите сообщение нарушителя!");
-						return;
-					}
-					ban_check = cbot.service.lvl_check(msg.chat_id,ban_uid);
-					if((ban_check != 0) && (acheck < 2)){
-						msg.reply("К сожалению, Вы не можете выдать предупреждение "+(ban_check == 1 ? 'модератору' : 'администратору')+"!");
-						return;
-					}
-					chat_info = cbot.service.BSC[msg.chat_id];
-					cbot.mysql.db.query('SELECT * FROM `warns` WHERE chat_id = ? AND user_id = ?', [msg.chat_id,ban_uid], function(err,result){
-						if(!result || !result[0]){
-							var dd = {user_id: ban_uid, chat_id: msg.chat_id, count: 1};
-							cbot.mysql.db.query('INSERT INTO `warns` SET ?', dd);
-							var bd_warn_count = 1;
-						} else{
-							var bd_warn_count = result[0].count + 1;
-							cbot.mysql.db.query('UPDATE `warns` SET `count` = ? WHERE `user_id` = ? AND `chat_id` = ?', [bd_warn_count, ban_uid, msg.chat_id]);
+					if(!ban_uid) ban_uid = obody.indexOf('vk.com')!==-1?obody.split('/')[obody.split('/').length-1]:obody;
+					vk.users.get({
+						user_ids: msg.user_id+','+ban_uid,
+						fields: 'name,lastname,sex'
+					}).then(function (ban_user_info){
+						if(!ban_user_info[1] || !ban_user_info[1].id)return msg.reply("Прикрепите сообщение нарушителя!")
+						ban_uid = ban_user_info[1].id
+						ban_check = cbot.service.lvl_check(msg.chat_id,ban_uid);
+						if((ban_check != 0) && (acheck < 2)){
+							msg.reply("К сожалению, Вы не можете выдать предупреждение "+(ban_check == 1 ? 'модератору' : 'администратору')+"!");
+							return;
 						}
-						vk.users.get({
-							user_id: ban_uid, // данные передаваемые API
-							fields: 'name,lastname,sex'
-						}).then(function (ban_user_info){
-							ban_user_info = ban_user_info[0];
+						chat_info = cbot.service.BSC[msg.chat_id];
+						cbot.mysql.db.query('SELECT * FROM `warns` WHERE chat_id = ? AND user_id = ?', [msg.chat_id,ban_uid], function(err,result){
+							if(!result || !result[0]){
+								var dd = {user_id: ban_uid, chat_id: msg.chat_id, count: 1};
+								cbot.mysql.db.query('INSERT INTO `warns` SET ?', dd);
+								var bd_warn_count = 1;
+							} else{
+								var bd_warn_count = result[0].count + 1;
+								cbot.mysql.db.query('UPDATE `warns` SET `count` = ? WHERE `user_id` = ? AND `chat_id` = ?', [bd_warn_count, ban_uid, msg.chat_id]);
+							}
+							admin_user_info = ban_user_info[0]
+							ban_user_info = ban_user_info[1]
 							if(bd_warn_count > chat_info.max_warns){
 								cbot.mysql.db.query('INSERT INTO `ban` SET ?', {user_id: ban_uid, chat_id: msg.chat_id});
 								msg.send("[id"+ban_uid+"|"+ban_user_info.first_name+" "+ban_user_info.last_name+"] забанен"+(ban_user_info.sex==1?'а':'')+" в этом чате [id"+msg.user_id+"|Администратором].");
@@ -135,31 +135,30 @@ module.exports = {
 				}
 				msg.get().then(function(ddata){
 					var ban_uid = (ddata.fwd_messages?ddata.fwd_messages[0].user_id:null);
-					if((!ban_uid) || (ban_uid == msg.user_id)){
-						msg.reply("Прикрепите сообщение нарушителя!");
-						return;
-					}
-					chat_info = cbot.service.BSC[msg.chat_id];
-					cbot.mysql.db.query('SELECT * FROM `warns` WHERE chat_id = ? AND user_id = ?', [msg.chat_id,ban_uid], function(err,result){
-						if(!result || !result[0]){
-							msg.reply("У этого пользователя не имеется предупреждений!");
-						} else{
-							var bd_warn_count = result[0].count - 1;
-							if(result[0].count==1){
-								cbot.mysql.db.query('DELETE FROM `warns` WHERE user_id = ? AND chat_id = ?', [ban_uid, msg.chat_id]);
-								msg.reply("Вы сняли последнее предупреждение для этого пользователя!");
-							} else cbot.mysql.db.query('UPDATE `warns` SET `count` = ? WHERE `user_id` = ? AND `chat_id` = ?', [bd_warn_count, ban_uid, msg.chat_id]);
-						}
-						if(bd_warn_count){
-							vk.users.get({
-								user_id: ban_uid, // данные передаваемые API
-								fields: 'name,lastname,sex',
-								name_case: 'gen',
-							}).then(function (ban_user_info){
-								ban_user_info = ban_user_info[0];
+					if(!ban_uid) ban_uid = obody.indexOf('vk.com')!==-1?obody.split('/')[obody.split('/').length-1]:obody;
+					vk.users.get({
+						user_ids: msg.user_id+','+ban_uid,
+						fields: 'name,lastname,sex'
+					}).then(function(ban_user_info){
+						if(!ban_user_info[1] || !ban_user_info[1].id)return msg.reply("Прикрепите сообщение нарушителя!")
+						ban_uid = ban_user_info[1].id
+						admin_user_info = ban_user_info[0]
+						ban_user_info = ban_user_info[1]
+						ban_check = cbot.service.lvl_check(msg.chat_id,ban_uid);
+						cbot.mysql.db.query('SELECT * FROM `warns` WHERE chat_id = ? AND user_id = ?', [msg.chat_id,ban_uid], function(err,result){
+							if(!result || !result[0]){
+								msg.reply("У этого пользователя не имеется предупреждений!");
+							} else{
+								var bd_warn_count = result[0].count - 1;
+								if(result[0].count==1){
+									cbot.mysql.db.query('DELETE FROM `warns` WHERE user_id = ? AND chat_id = ?', [ban_uid, msg.chat_id]);
+									msg.reply("Вы сняли последнее предупреждение для этого пользователя!");
+								} else cbot.mysql.db.query('UPDATE `warns` SET `count` = ? WHERE `user_id` = ? AND `chat_id` = ?', [bd_warn_count, ban_uid, msg.chat_id]);
+							}
+							if(bd_warn_count){
 								msg.send("С [id"+ban_uid+"|"+ban_user_info.first_name+" "+ban_user_info.last_name+"] снято предупреждение [id"+msg.user_id+"|Администратором].\n\nВ данный момент он"+(ban_user_info.sex==1?'а':'')+" имеет "+bd_warn_count+"/"+chat_info.max_warns+" предупреждений.");
-							});
-						}
+							}
+						})
 					});
 				});
 			},
@@ -179,20 +178,20 @@ module.exports = {
 				}
 				msg.get().then(function(ddata){
 					var ban_uid = (ddata.fwd_messages?ddata.fwd_messages[0].user_id:null);
-					if((!ban_uid) || (ban_uid == msg.user_id)){
-						msg.reply("Прикрепите сообщение нарушителя!");
-						return;
-					}
-					ban_check = cbot.service.lvl_check(msg.chat_id,ban_uid);
-					if((ban_check != 0) && (acheck < 2)){
-						msg.reply("К сожалению, Вы не можете выгнать "+(ban_check == 1 ? 'модератора' : 'администратора')+"!");
-						return;
-					}
+					if(!ban_uid) ban_uid = obody.indexOf('vk.com')!==-1?obody.split('/')[obody.split('/').length-1]:obody;
 					vk.users.get({
-						user_id: ban_uid, // данные передаваемые API
+						user_ids: msg.user_id+','+ban_uid,
 						fields: 'name,lastname,sex'
 					}).then(function (ban_user_info){
-						ban_user_info = ban_user_info[0];
+						if(!ban_user_info[1] || !ban_user_info[1].id)return msg.reply("Прикрепите сообщение нарушителя!")
+						ban_uid = ban_user_info[1].id
+						ban_check = cbot.service.lvl_check(msg.chat_id,ban_uid);
+						if((ban_check != 0) && (acheck < 2)){
+							msg.reply("К сожалению, Вы не можете выгнать "+(ban_check == 1 ? 'модератора' : 'администратора')+"!");
+							return;
+						}
+						admin_user_info = ban_user_info[0]
+						ban_user_info = ban_user_info[1]
 						msg.send("[id"+ban_uid+"|"+ban_user_info.first_name+" "+ban_user_info.last_name+"] выгнан"+(ban_user_info.sex==1?'а':'')+" из этого чата [id"+msg.user_id+"|Администратором].");
 						msg.removeChatUser(ban_uid);
 					});
