@@ -18,7 +18,7 @@ var ths = {
 	msg:{
 		'top':{
 			aliases: ["top","топ"],
-			description: "Статистика диалога:\n\ntop - общая статистика диалога\ntop users - самые активные участники беседы\ntop days - самые активные дни", //описание функции
+			description: "Статистика диалога:\n\ntop - общая статистика диалога\ntop active - самые активные участники беседы\ntop users - самые активные участники беседы, включая вышедших\ntop days - самые активные дни", //описание функции
 			go:function(cbot,vk,msg,body,tbody,obody){ //cbot = CloudBOT interface; vk = vk promise interface; msg = msg object; body = тело сообщения; tbody = вызванный aliase команды; cbody = тело сообщения без aliase
 				var mgs = msg.send('Идёт загрузка сообщений...'),
 					count = {words:0,stickers:0,attachments: 0,photos: 0,videos: 0,audios: 0,docs: 0, walls: 0,wall_replys: 0,maps: 0,forwarded: 0,censored: 0,welcomes: 0,comings: 0,abuses: 0},
