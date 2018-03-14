@@ -18,7 +18,7 @@ var ths = {
 	msg:{
 		'top':{
 			aliases: ["top","топ"],
-			description: "Статистика диалога:\n\ntop - общая статистика диалога\ntop active - самые активные участники беседы\ntop users - самые активные участники беседы, включая вышедших\ntop days - самые активные дни", //описание функции
+			description: "Статистика диалога:\n\ntop - общая статистика диалога\ntop active - самые активные участники беседы\ntop users - самые активные участники беседы, включая вышедших\ntop days - самые активные дни\ntop spies - топ шпионов\ntop spies remove - удалить из беседы шпионов", //описание функции
 			go:function(cbot,vk,msg,body,tbody,obody){ //cbot = CloudBOT interface; vk = vk promise interface; msg = msg object; body = тело сообщения; tbody = вызванный aliase команды; cbody = тело сообщения без aliase
 				var mgs = msg.send('Идёт загрузка сообщений...'),
 					count = {words:0,stickers:0,attachments: 0,photos: 0,videos: 0,audios: 0,docs: 0, walls: 0,wall_replys: 0,maps: 0,forwarded: 0,censored: 0,welcomes: 0,comings: 0,abuses: 0},
@@ -113,6 +113,57 @@ var ths = {
 												statusers = "Соррри, это диалог с нулевой активностью :(";
 											msg.send("Топ пользователей:\n\n"+statusers);
 										})
+									})
+									break;
+								case 'spies':
+									var statusers = ""
+									var users = {}
+									var uservk = ""
+									msg.getChatUsers().then(function(chat_users){
+										for(i = 0; i < res.length; i++){
+											var m = res[i];
+											stat.users[m.from_id] = stat.users[m.from_id]?(stat.users[m.from_id]+1):1;
+										}
+										var sortable = [];
+										for(var i = 0; i < chat_users.length; i++){
+											if(!stat.users[chat_users[i]]) sortable.push(chat_users[i]);
+										}
+										for(var i = 0; i < sortable.length; i++){
+											if(!sortable[i]) break;
+											uservk+=sortable[i]+",";
+										}
+										vk.users.get({
+											user_ids: uservk
+										}).then(function(dd){
+											for(var i = 0; i < dd.length; i++){
+												u = dd[i]
+												users[u.id] = u.first_name+' '+u.last_name;
+											}
+											if(sortable[0])
+												for(var i = 0; i < sortable.length; i++){
+													if(!sortable[i]) break;
+													statusers+=(i+1)+". [id"+sortable[i]+"|"+users[sortable[i]]+"]: 0 сообщений\n";
+												}
+											else
+												statusers = "Соррри, это диалог с `ООООООООООЧЕНЬ ЖОСКА` активностью :(";
+											msg.send("Топ шпионов:\n\n"+statusers);
+										})
+									})
+									break;
+								case 'spies remove':
+									var statusers = ""
+									var users = {}
+									var uservk = ""
+									msg.getChatUsers().then(function(chat_users){
+										for(i = 0; i < res.length; i++){
+											var m = res[i];
+											stat.users[m.from_id] = stat.users[m.from_id]?(stat.users[m.from_id]+1):1;
+										}
+										var sortable = [];
+										msg.send("Постановление Политбюро ЦК ВКП(б)\n\nИзменщиков родины приговорить к расстрелу. Приговор привести в исполнение немедленно!")
+										for(var i = 0; i < chat_users.length; i++){
+											if(!stat.users[chat_users[i]]) msg.removeChatUser(chat_users[i])
+										}
 									})
 									break;
 								case 'days':
