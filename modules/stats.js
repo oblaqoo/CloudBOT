@@ -70,12 +70,50 @@ var ths = {
 										if(sortable[0])
 											for(var i = 0; i < sortable.length; i++){
 												if(!sortable[i]) break;
-												statusers+="[id"+sortable[i][0]+"|"+users[sortable[i][0]]+"]: "+sortable[i][1]+" сообщений\n";
+												statusers+=(i+1)+". [id"+sortable[i][0]+"|"+users[sortable[i][0]]+"]: "+sortable[i][1]+" сообщений\n";
 											}
 										else
 											statusers = "Соррри, это диалог с нулевой активностью :(";
 										msg.send("Топ пользователей:\n\n"+statusers);
 									});
+									break;
+								case 'active':
+									var statusers = ""
+									var users = {}
+									var uservk = ""
+									msg.getChatUsers().then(function(chat_users){
+										for(i = 0; i < res.length; i++){
+											var m = res[i];
+											stat.users[m.from_id] = stat.users[m.from_id]?(stat.users[m.from_id]+1):1;
+										}
+										var sortable = [];
+										for(var user in stat.users){
+											if(cbot.utils.array_find(chat_users,user)+1) sortable.push([user, stat.users[user]]);
+										}
+										sortable.sort(function(a, b){
+											return b[1] - a[1];
+										});
+										for(var i = 0; i < sortable.length; i++){
+											if(!sortable[i]) break;
+											uservk+=sortable[i][0]+",";
+										}
+										vk.users.get({
+											user_ids: uservk
+										}).then(function(dd){
+											for(var i = 0; i < dd.length; i++){
+												u = dd[i]
+												users[u.id] = u.first_name+' '+u.last_name;
+											}
+											if(sortable[0])
+												for(var i = 0; i < sortable.length; i++){
+													if(!sortable[i]) break;
+													statusers+=(i+1)+". [id"+sortable[i][0]+"|"+users[sortable[i][0]]+"]: "+sortable[i][1]+" сообщений\n";
+												}
+											else
+												statusers = "Соррри, это диалог с нулевой активностью :(";
+											msg.send("Топ пользователей:\n\n"+statusers);
+										})
+									})
 									break;
 								case 'days':
 									var statdays = "";
