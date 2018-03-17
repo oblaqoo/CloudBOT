@@ -16,6 +16,7 @@ module.exports = {
 	},
 	modules_place: 'modules', //местоположение папки с модулями
 	modules:[ //активные команды из папки cmds
+		"basic_htmlspecialcharsdecode",
 		"antimat",
 		"autofriends",
 		"autostatus",

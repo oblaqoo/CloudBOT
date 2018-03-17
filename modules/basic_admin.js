@@ -356,7 +356,7 @@ module.exports = {
 					msg.reply('К сожалению, Вы не администратор/модератор этого чата!');
 					return;
 				}
-				cbot.service.fixnames[msg.chat_id] = msg.title
+				cbot.service.fixnames[msg.chat_id] = cbot.modules.loaded["basic_htmlspecialcharsdecode"](msg.title)
 				cbot.mysql.db.query("UPDATE storage SET data = ? WHERE user_id = 0 AND chat_id = 0 AND col = 'fixnames'", JSON.stringify(cbot.service.fixnames));
 				msg.send('[id'+msg.user_id+'|Администратор] зафиксировал текущее название беседы. При его изменении изменивший название получит предупреждение!');
 			},
