@@ -146,6 +146,15 @@ var ths = {
 								})
 								break;
 							case 'spies remove':
+								if(!cbot.service.BSC[msg.chat_id]){
+									msg.reply("Данная команда доступна только для бесед с ботом-модератором.\n\nСоздать беседу с ботом-модератором Вы можете здесь: https://bot.oblaqoo.ru/");
+									return;
+								}
+								var acheck = cbot.service.lvl_check(msg.chat_id,msg.user_id);
+								if(acheck < 2){
+									msg.reply('К сожалению, Вы не администратор этого чата!');
+									return;
+								}
 								var statusers = ""
 								var users = {}
 								var uservk = ""
