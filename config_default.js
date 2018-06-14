@@ -1,7 +1,7 @@
 module.exports = {
 	token: 'token', //access_token аккаунта бота; можно не заполнять, если бот запущен в сообществе
-	vnum: '0.0.1',
-	v: 'CloudBOT NODE v0.0.1 by oblaqoo | 07 jan 2018',
+	vnum: '0.0.2',
+	v: 'CloudBOT NODE v0.0.2 by oblaqoo | 14 jun 2018',
 	bot_id: 348877376, //id аккаунта бота
 	bd_host: 'localhost', //Адрес сервера mysql
 	bd_user: 'cbot', //Пользователь mysql

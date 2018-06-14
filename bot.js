@@ -7,7 +7,7 @@ try {
     var config = require('./config_default.js');
 }
 var fs = require("fs"),
-	VK = require("VK-Promise"),
+	VK = require("./vk.js"),
 	mysql = require('mysql'),
 	md5 = require("nodejs-md5"),
 	request = require('request'),
@@ -15,8 +15,6 @@ var fs = require("fs"),
 	http = require("http"),
 	RuCaptcha = require('./rucaptcha.js'),
 	cb = new events.EventEmitter(),
-	Robokassa = require('robo-kassa'),
-	robo = new Robokassa({login: config.robokassa.login, password1: config.robokassa.password1, password2: config.robokassa.password2, test: config.robokassa.test}),
 	unhandledRejection = require("unhandled-rejection");
 var cbot = {
 	callbacks: require('./'+config.modules_place+'/callbacks.js'),
@@ -293,15 +291,6 @@ if(config.callback.group){
 }
 var captcha = new RuCaptcha({apiKey: config.captcha.apiKey, tmpDir: config.captcha.dir, checkDelay: config.captcha.delay})
 var rejectionEmitter = unhandledRejection({timeout: 20})
-if(cbot.modules.loaded["web_panel"])
-	cbot.modules.loaded["web_panel"].payment_save(robo)
-else
-	setTimeout(function(){
-		if(cbot.modules.loaded["web_panel"])
-			cbot.modules.loaded["web_panel"].payment_save(robo)
-		else
-			console.log(chalk.cyan('[RoboKassa] ')+chalk.redBright('ERR! ')+"Resource web_panel was not loaded!")
-	}, 2000)
 //-------------------------------
 vk.on("message",function(event, msg){
 	//if((msg.chat_id != 59) && (msg.user_id != 145301982)) return; //silent mode
