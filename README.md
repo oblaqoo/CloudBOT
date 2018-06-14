@@ -1,21 +1,34 @@
-CloudBOT NODE 0.0.1
+CloudBOT NODE 0.0.2
 =
 ```
-ВНИМАНИЕ! CloudBOT NODE был отделён от основной версионной ветки! Версия CloudBOT NODE сброшена до 0.0.1.
+В этой версии:
 
-- Изменён шаблон модуля, старый более не поддерживается!
-- Один модуль теперь может содержать несколько чат-команд
-- Убраны консольные команды, т.к. от них одни проблемы :)
-- Модули cmd_admin, cmd_moder, cmd_ban, cmd_unban, cmd_warn, cmd_unwarn и cmd_kick объеденены в один basic_admin
+- Клавиатура бота для сообществ
 ```
 
-Если бот не выгоняет пользователя из чата после команд ban и warn перейдите по пути .../node_modules/VK-Promise/ и измените файл index.js в строке 188:
+Отправка клавиатуры
 ```
-return this.chatMethod("messages.removeChatUser", {message_id: this.id});
+msg.sendKeyboard(сообщение, кнопки, one_time)
 ```
-замените на
+Пример:
 ```
-return this.chatMethod("messages.removeChatUser", {user_id});
+msg.sendKeyboard("Привет! Нажми Да или Нет.", [
+	[{ 
+		"action": { 
+		"type": "text", 
+		"payload": "{\"command\": \"yes\"}", 
+		"label": "Да" 
+		}, 
+		"color": "positive" 
+	},{
+		"action": { 
+		"type": "text", 
+		"payload": "{\"command\": \"no\"}", 
+		"label": "Нет" 
+		}, 
+		"color": "negative" 
+	}]
+], true)
 ```
 
 Возможности
@@ -110,6 +123,7 @@ node bot.js
 		* `pin` - закрепить
 	* `send` - отправить сообщение
 	* `reply` - ответить на сообщение
+	* `sendKeyboard` - отправить клавиатуру
 	* `sendSticker` - отправить стикер
 	* `sendPhoto` - отправить фото
 	* `sendDoc` - отправить документ
