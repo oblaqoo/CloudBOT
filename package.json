@@ -1,6 +1,6 @@
 {
   "name": "CloudBOT",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Entertaining bot for vk.com with additional functionality in the form of moderating chats",
   "main": "bot.js",
   "scripts": {

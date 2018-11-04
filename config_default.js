@@ -1,7 +1,7 @@
 module.exports = {
 	token: 'token', //access_token аккаунта бота; можно не заполнять, если бот запущен в сообществе
-	vnum: '0.0.2',
-	v: 'CloudBOT NODE v0.0.2 by oblaqoo | 14 jun 2018',
+	vnum: '0.0.3',
+	v: 'CloudBOT NODE v0.0.3 by oblaqoo | 04 nov 2018',
 	bot_id: 348877376, //id аккаунта бота
 	bd_host: 'localhost', //Адрес сервера mysql
 	bd_user: 'cbot', //Пользователь mysql
@@ -20,16 +20,12 @@ module.exports = {
 		"antimat",
 		"autofriends",
 		"autostatus",
-		"basic_admin",
 		"cmd_time",
 		"cmd_ball",
 		"cmd_say",
 		"cmd_info",
-		"cmd_wh",
+		"wh",
 		"cmd_help",
-		"pi",
-		"web_panel",
-		"invite_links",
 	],
 	voice_key: '', //получите API-ключ SpeechKit Cloud здесь: https://developer.tech.yandex.ru/keys/
 	voice_speaker: 'zahar', //голос синтезированной речи. Можно выбрать один из следующих голосов: женские голоса: jane, oksana, alyss и omazh; мужские голоса: zahar и ermil.
