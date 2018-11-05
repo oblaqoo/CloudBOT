@@ -281,6 +281,12 @@ Message.prototype.getChatUsers = function getChatUsers(data) {
     return this.chatMethod('messages.getChatUsers', data);
 }
 
+Message.prototype.getConversationMembers = function getConversationMembers(data) {
+    if(!data) data = {}
+	data.v = "5.80"
+	return this.chatMethod("messages.getConversationMembers", data);
+}
+
 Message.prototype.editChat = function editChat(title, data) {
     data = Object.assign({
         title: title
